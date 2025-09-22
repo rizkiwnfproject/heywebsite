@@ -42,10 +42,10 @@ const SignIn = () => {
   return (
     <div className="form-section container max-w-[1130px] w-full mx-auto flex flex-col gap-[30px] p-5">
       <div className="title flex flex-col gap-1">
-        <h1 className="font-bold text-[32px] leading-[48px] text-primary">
+        <h1 className="font-bold text-[32px] leading-[48px]">
           Sign In
         </h1>
-        <p className="font-medium text-sm md:text-lg leading-[27px] text-primary/90">
+        <p className="font-medium text-sm md:text-lg leading-[27px]">
           Sign in to reconnect with your space
         </p>
       </div>

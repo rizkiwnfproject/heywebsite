@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { registerSchema } from "@/lib/schema";
 import React from "react";
-import { useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -17,35 +16,39 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button type="submit" disabled={pending} className="">
-      {pending ? "Loading..." : "Sign In"}
-    </Button>
-  );
-}
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
   });
 
   const onSubmit = async (val: z.infer<typeof registerSchema>) => {
     try {
-      console.log(val);
+      await fetch("/api/sign-up", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(val),
+      });
+      toast("Sukses", {
+        description: "Pembuatan akun berhasil",
+      });
+      router.push("/sign-in");
     } catch (error) {
       console.log(error);
+      toast("Error", {
+        description: "Data yang diinputkan salah",
+      });
     }
   };
   return (
     <div className="form-section container max-w-[1130px] w-full mx-auto flex flex-col gap-[30px] p-5">
       <div className="title flex flex-col gap-1">
-        <h1 className="font-bold text-[32px] leading-[48px] text-primary">
-          Sign Up
-        </h1>
-        <p className="font-medium text-sm md:text-lg leading-[27px] text-primary/90">
+        <h1 className="font-bold text-[32px] leading-[48px] ">Sign Up</h1>
+        <p className="font-medium text-sm md:text-lg leading-[27px] ">
           Join now and explore new spaces
         </p>
       </div>
