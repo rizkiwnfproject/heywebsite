@@ -3,18 +3,18 @@ import prisma from "../../../../lib/prisma";
 import { signJwt } from "@/lib/token";
 
 export async function POST(req: Request) {
-  const { username, phone } = await req.json();
+  const { username, number_phone } = await req.json();
 
   const user = await prisma.user.findUnique({
     where: { username },
   });
 
-  if (!user || user.number_phone !== phone) {
+  if (!user || user.number_phone !== number_phone) {
     return NextResponse.json({ error: "Username/nomor telepon tidak ditemukan" }, { status: 401 });
   }
 
-  const token = signJwt({ id: user.id, username: user.username });
-
+  const token = signJwt({ id: user.id, username: user.username });  
+  
   const res = NextResponse.json({ message: "Login Success" });
 
   res.cookies.set("token", token, {

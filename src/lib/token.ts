@@ -10,6 +10,7 @@ export function verifyJwt(token: string) {
   try {
     return jwt.verify(token, SECRET);
   } catch (error) {
+    console.error("JWT Verify Error:", error);
     return null;
   }
 }
