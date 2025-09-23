@@ -27,15 +27,26 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import { useRouter } from "next/navigation";
 
 const AddSpaceModal = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof createSpaceSchema>>({
     resolver: zodResolver(createSpaceSchema),
   });
 
   const onSubmit = async (val: z.infer<typeof createSpaceSchema>) => {
     try {
-      console.log(val);
+      await fetch("/api/space/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(val),
+      });
+      toast("Sukses", {
+        description: "Space berhasil dibuat",
+      });
+      router.refresh();
     } catch (error) {
       toast("Error", {
         description: "Error Add / Edit Teams, please try again",
