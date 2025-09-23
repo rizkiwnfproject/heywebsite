@@ -19,9 +19,12 @@ export default function RootLayout({
         <main>
           <div className="w-full max-h-screen flex">
             <Sidebar setActivePage={setActivePage} />
-            <div className="flex-1 px-4">
+            <div className="w-[25%] ">
               {activePage === "chat" && <div><ListChatPage /></div>}
               {activePage === "settings" && <div>⚙️ Settings Page</div>}
+            </div>
+            <div className="flex-1">
+              {children}
             </div>
           </div>
         </main>
