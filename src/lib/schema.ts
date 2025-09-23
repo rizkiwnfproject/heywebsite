@@ -23,3 +23,12 @@ export const loginSchema = z.object({
     .string({ message: "Nomor HP pengguna harus diisi" })
     .min(8, { message: "Nomor HP pengguna minimal 8 karakter" }),
 });
+
+export const createSpaceSchema = z.object({
+  name: z
+    .string({ message: "Nama space harus diisi" })
+    .min(3, { message: "Nama space minimal 3 karakter" }),
+  description: z.string().optional(),
+  permission: z.boolean().optional(),
+  avatar: z.any().optional(),
+});
