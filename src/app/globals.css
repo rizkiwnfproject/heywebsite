@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "@mantine/core/styles.css";
+@import "@blocknote/react/style.css";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -67,7 +69,7 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: rgb(254, 154, 0);
-  --sidebar: #113F67;
+  --sidebar: #113f67;
   --sidebar-foreground: oklch(0.141 0.005 285.823);
   --sidebar-primary: oklch(0.623 0.214 259.815);
   --sidebar-primary-foreground: oklch(0.97 0.014 254.604);

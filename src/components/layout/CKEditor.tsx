@@ -23,7 +23,7 @@ const CKeditor: FC<CKeditorProps> = ({ form, name, editorLoaded }) => {
   return (
     <>
       {editorLoaded ? (
-        <div className="w-[650px]">
+        <div className="">
           {CKEditor && (
             <CKEditor
               editor={ClassicEditor}
@@ -39,7 +39,7 @@ const CKeditor: FC<CKeditorProps> = ({ form, name, editorLoaded }) => {
             name={name}
             render={() => (
               <FormItem>
-                <FormMessage className="mt-3" />
+                <FormMessage className="mt-3 h-[500px]" />
               </FormItem>
             )}
           />

@@ -40,5 +40,5 @@ export const createMessageSchema = z.object({
 
 export const createNoteSchema = z.object({
   title: z.string({ message: "Judul note space harus diisi" }),
-  content: z.string().optional()
+  content: z.any().optional()
 });

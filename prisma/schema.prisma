@@ -150,7 +150,7 @@ model Note {
   userId    String
   User      User     @relation(fields: [userId], references: [id])
   title     String
-  content   Json
+  content   Json?
   photo     String?
   link      String?
   createdAt DateTime @default(now())
