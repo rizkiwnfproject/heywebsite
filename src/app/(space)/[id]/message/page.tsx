@@ -1,82 +1,184 @@
+"use client";
+
 import HeaderMessage from "@/components/layout/headerMessage";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
-  EllipsisVertical,
-  Paperclip,
-  Plus,
-  PlusCircle,
-  SendHorizontal,
-} from "lucide-react";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { createMessageSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EllipsisVertical, Paperclip, SendHorizontal } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { FC, use, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
 
-interface Props {
-  params: { id: string };
+type Params = {
+  id: string;
+};
+
+interface SpaceMessageProps {
+  params: Params;
 }
 
-const SpaceMessagePage = async ({ params }: Props) => {
-  const { id } = await params;
-  console.log(id);
+interface messageProps {
+  id: string;
+  message: string;
+  photo?: string | null;
+  createdAt: string;
+  User: { id: string; name: string; photo?: string | null };
+  Space: { id: string; name: string };
+}
+
+const SpaceMessagePage: FC<SpaceMessageProps> = ({ params }) => {
+  const { id } = use(params);
+  const [messages, setMessages] = useState<messageProps[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string>("");
+
+  const form = useForm<z.infer<typeof createMessageSchema>>({
+    resolver: zodResolver(createMessageSchema),
+  });
+
+  const onSubmit = async (val: z.infer<typeof createMessageSchema>) => {
+    try {
+      await fetch(`/api/space/${id}/message/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(val),
+      });
+      toast("Sukses", {
+        description: "Pesan berhasil dikirim",
+      });
+    } catch (error) {
+      console.log(error);
+      toast("Error", {
+        description: "Data yang diinputkan salah",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const res = await fetch(`/api/space/${id}/message/read`);
+      if (!res.ok) return;
+      const data = await res.json();
+
+      setMessages(data.messages);
+      setCurrentUserId(data.currentUserId);
+    };
+    fetchMessages();
+  }, [id]);
 
   return (
     <>
       <div className="max-h-screen h-screen w-full flex flex-col justify-between">
         {/* header */}
-        <HeaderMessage name="nama space" nameNote="Lesson" id={id}/>
+        <HeaderMessage
+          name={messages[0]?.Space.name ?? "loading"}
+          nameNote="Lesson"
+          id={id}
+        />
         {/* chat */}
-        <div className="flex-1 p-5">
-          {/* another user */}
-          <div className="w-full flex justify-start">
-            <div className="flex gap-2 items-start">
-              <Image
-                src={"/images/sign/sign.jpg"}
-                alt=""
-                width={50}
-                height={50}
-                className="rounded-full"
-              />
-              <div className="min-w-40 max-w-[40%] bg-slate-50 p-3 rounded space-y-3">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-sm">Nama Teman</p>
-                  <EllipsisVertical className="w-4" />
-                </div>
-                <p className="break-words text-sm">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-                  odit repudiandae quo velit blanditiis, at distinctio illum
-                  provident eos enim dolores delectus quibusdam sit ad! Corrupti
-                  cupiditate quas quidem distinctio!
-                </p>
+        <div className="flex-1 p-5 space-y-2 overflow-y-auto">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`w-full flex ${
+                msg.User.id === currentUserId ? "justify-end" : "justify-start"
+              }`}
+            >
+              {msg.User.id !== currentUserId && (
+                <Image
+                  src={msg.User.photo ?? "/images/sign/sign.jpg"}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              )}
+              <div
+                className={`min-w-40 max-w-[40%] p-3 rounded space-y-2 ${
+                  msg.User.id === currentUserId
+                    ? "bg-green-800 text-white"
+                    : "bg-slate-100"
+                }`}
+              >
+                {msg.User.id !== currentUserId && (
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-sm">{msg.User.name}</p>
+                    <EllipsisVertical className="w-4" />
+                  </div>
+                )}
+                {msg.message && (
+                  <p className="break-words text-sm">{msg.message}</p>
+                )}
+                {msg.photo && (
+                  <Image
+                    src={msg.photo}
+                    alt="image"
+                    width={200}
+                    height={200}
+                    className="rounded"
+                  />
+                )}
               </div>
             </div>
-          </div>
-          <div className="w-full flex justify-end">
-            <div className="min-w-40 max-w-[40%] bg-green-500 p-3 rounded space-y-3">
-              <p className="break-words text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-                odit repudiandae quo velit blanditiis, at distinctio illum
-                provident eos enim dolores delectus quibusdam sit ad! Corrupti
-                cupiditate quas quidem distinctio!
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
         {/* input */}
         <div className="">
-          <div className="relative">
-            <Input className="bg-white pl-16  h-12 rounded-none focus-visible:border-0 focus-visible:border-t focus-visible:ring-0 border-0 border-t" />
-            <div className="absolute top-1 right-3 hover:bg-primary p-2 rounded hover:text-white">
-              <SendHorizontal />
-            </div>
-            <div className="absolute top-1 left-3 hover:bg-primary p-2 rounded hover:text-white flex">
-              <Paperclip />
-              <Input
-                type="file"
-                accept=".jpg,.jpeg,.png"
-                className="w-10 absolute top-0 left-0 file:text-transparent bg-transparent border-none"
-              />
-            </div>
-          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="">
+              <div className="relative">
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          className="bg-white pl-16  h-12 rounded-none focus-visible:border-0 focus-visible:border-t focus-visible:ring-0 border-0 border-t"
+                          placeholder="Tulis Pesan"
+                          {...field}
+                        />
+                      </FormControl>
+                      {/* <FormMessage /> */}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="photo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="absolute top-1 left-3 hover:bg-primary p-2 rounded hover:text-white flex">
+                          <Paperclip />
+
+                          <Input
+                            type="file"
+                            accept=".jpg,.jpeg,.png"
+                            className="w-10 absolute top-0 left-0 file:text-transparent bg-transparent border-none"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button className="absolute top-2 right-3  p-2 rounded">
+                  <SendHorizontal />
+                </Button>
+              </div>
+            </form>
+          </Form>
           <div className="h-2 bg-blue-600"></div>
         </div>
       </div>

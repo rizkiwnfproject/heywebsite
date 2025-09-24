@@ -32,3 +32,8 @@ export const createSpaceSchema = z.object({
   permission: z.boolean().optional(),
   avatar: z.any().optional(),
 });
+
+export const createMessageSchema = z.object({
+  message: z.string({ message: "Pesan space harus diisi" }),
+  photo: z.any().optional(),
+});

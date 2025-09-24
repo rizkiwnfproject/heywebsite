@@ -4,7 +4,6 @@ import AddSpaceModal from "@/components/layout/addSpace";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import SpaceMessagePage from "../[id]/message/page";
 
 interface Space {
   id: string;
@@ -43,7 +42,7 @@ const ListChatPage = () => {
           {/* search */}
           <div className="h-[90%] space-y-3 overflow-y-auto">
             {spaces.map((space) => (
-              <Link href={`/${space.id}/message`}>
+              <Link key={space.id} href={`/${space.id}/message`}>
                 <div
                   key={space.id}
                   className="flex items-center gap-2 p-2 w-full hover:bg-slate-50 rounded"
