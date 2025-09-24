@@ -20,6 +20,10 @@ export async function GET() {
     include: {
       SpaceMember: true,
       creator: true,
+      Message: {
+        orderBy: { createdAt: "desc" },
+        take: 1,
+      },
     },
   });
   return Response.json(listSpace);

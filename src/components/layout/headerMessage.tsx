@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import AddNoteModal from "./addNote";
+import { fetcher } from "@/lib/utils";
+import useSWR from "swr";
 
 interface HeaderMessageProps {
   name: string;
@@ -23,23 +25,17 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
   id,
 }) => {
   const router = useRouter();
-  const [notes, setNotes] = useState<Note[]>([]);
 
-  useEffect(() => {
-    const fetchSpaces = async () => {
-      try {
-        const res = await fetch(`/api/space/${id}/note/read`);
-        if (!res.ok) throw new Error("Failed to fetch note");
-        const data = await res.json();
-        console.log(data);
+  const { data, error, isLoading } = useSWR<{ notes: Note[] }>(
+    `/api/space/${id}/note/read`,
+    fetcher,
+    {refreshInterval: 2000}
+  );
 
-        setNotes(data.notes);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchSpaces();
-  }, []);
+  if (isLoading) return <p className="p-5">Loading...</p>;
+  if (error) return <p className="p-5 text-red-500">Error loading notes</p>;
+
+  const notes = data?.notes ?? [];
 
   return (
     <>

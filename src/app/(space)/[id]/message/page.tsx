@@ -7,7 +7,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -16,7 +15,7 @@ import { fetcher } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EllipsisVertical, Paperclip, SendHorizontal } from "lucide-react";
 import Image from "next/image";
-import React, { FC, use, useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -42,6 +41,11 @@ interface messageProps {
 export default function SpaceMessagePage({ params }: SpaceMessageProps) {
   const { id } = params;
 
+  const { data: space, error: spaceError } = useSWR(
+    `/api/space/${id}/detail/read`,
+    fetcher
+  );
+
   const { data, error, isLoading, mutate } = useSWR(
     `/api/space/${id}/message/read`,
     fetcher,
@@ -66,7 +70,7 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
       toast("Sukses", {
         description: "Pesan berhasil dikirim",
       });
-      form.reset(); 
+      form.reset();
       mutate();
     } catch (error) {
       console.log(error);
@@ -84,7 +88,7 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
       <div className="max-h-screen h-screen w-full flex flex-col justify-between">
         {/* header */}
         <HeaderMessage
-          name={messages[0]?.Space.name ?? "loading"}
+          name={space?.name ?? "Loading..."}
           nameNote="Lesson"
           id={id}
         />

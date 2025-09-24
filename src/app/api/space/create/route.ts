@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const payload = verifyJwt(token)
+    const payload = verifyJwt(token);
 
     if (!payload) {
       return Response.json({ error: "Invalid token" }, { status: 401 });
@@ -30,6 +30,16 @@ export async function POST(req: Request) {
         permission: parsed.permission ?? true,
         avatar: parsed.avatar,
         createdBy: payload.id,
+        SpaceMember: {
+          create: {
+            userId: payload.id,
+            role: "ADMIN",
+            status: "ACCEPTED"
+          },
+        },
+      },
+      include: {
+        SpaceMember: true,
       },
     });
     return Response.json(space, { status: 201 });
