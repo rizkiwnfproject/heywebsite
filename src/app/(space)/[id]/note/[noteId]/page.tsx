@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import CKeditor from "@/components/layout/CKEditor";
 import HeaderMessage from "@/components/layout/headerMessage";
@@ -6,12 +6,15 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createNoteSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { FC, use } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
 type Params = {
   id: string;
+  noteId: string
 };
 
 interface SpaceNoteProps {
@@ -31,6 +34,8 @@ const SpaceNotePage: FC<SpaceNoteProps> = ({
   photo,
   title,
 }) => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof createNoteSchema>>({
     resolver: zodResolver(createNoteSchema),
     defaultValues: {
@@ -48,30 +53,17 @@ const SpaceNotePage: FC<SpaceNoteProps> = ({
   };
   return (
     <>
-      <div className="max-h-screen h-screen w-full flex flex-col justify-between">
+      <div className="max-h-screen h-screen w-full flex flex-col">
         {/* header */}
-        <HeaderMessage name={"sss"} nameNote="Lesson" id={id} />
+        <div
+          onClick={() => router.push(`/${params.id}/message`)}
+          className="h-15 bg-primary flex items-center px-5 text-white cursor-pointer"
+        >
+          <ChevronLeft />
+          <p>kembali</p>
+        </div>
         <div className="">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        className="bg-white pl-16  h-12 rounded-none focus-visible:border-0 focus-visible:border-t focus-visible:ring-0 border-0 border-t"
-                        placeholder="Tulis Pesan"
-                        {...field}
-                      />
-                    </FormControl>
-                    {/* <FormMessage /> */}
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
+            ss
         </div>
       </div>
     </>

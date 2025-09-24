@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  ChevronLeft,
-  ChevronRight,
-  EllipsisVertical,
-  Plus,
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import AddNoteModal from "./addNote";
 
@@ -17,14 +12,35 @@ interface HeaderMessageProps {
   id: string;
 }
 
+interface Note {
+  id: string;
+  title: string;
+}
+
 const HeaderMessage: FC<HeaderMessageProps> = ({
   name = "nama space",
   nameNote = "Lesson",
   id,
 }) => {
   const router = useRouter();
-  console.log("id dari header", id);
-  
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  useEffect(() => {
+    const fetchSpaces = async () => {
+      try {
+        const res = await fetch(`/api/space/${id}/note/read`);
+        if (!res.ok) throw new Error("Failed to fetch note");
+        const data = await res.json();
+        console.log(data);
+
+        setNotes(data.notes);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSpaces();
+  }, []);
+
   return (
     <>
       <div className="">
@@ -38,10 +54,15 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
         </div>
         <div className="bg-slate-100 flex items-center px-5 py-2 space-x-2">
           <AddNoteModal id={id} />
-          <Button className="flex items-center gap-2 px-3 py-1 bg-blue-700 rounded">
-            <p>{nameNote} </p>
-          </Button>
-        
+          {notes.map((note) => (
+            <Button
+              key={note.id}
+              onClick={() => router.push(`/${id}/note/${note.id}`)}
+              className="flex items-center gap-2 px-3 py-1 bg-blue-700 rounded"
+            >
+              <p>{note.title} </p>
+            </Button>
+          ))}
         </div>
       </div>
     </>

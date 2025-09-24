@@ -30,8 +30,6 @@ interface AddNoteModalProps {
 }
 
 const AddNoteModal: FC<AddNoteModalProps> = ({ id }) => {
-  console.log("id dari add note", id);
-
 
   const form = useForm<z.infer<typeof createNoteSchema>>({
     resolver: zodResolver(createNoteSchema),
@@ -59,8 +57,8 @@ const AddNoteModal: FC<AddNoteModalProps> = ({ id }) => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button
-            className="flex items-center gap-2 px-3 py-1 bg-blue-700 rounded"
+          <Button variant={"outline"}
+            className="flex items-center gap-2 px-3 py-1"
           >
             <p>add </p>
             <Plus className="w-4" />
