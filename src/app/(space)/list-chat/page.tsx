@@ -1,9 +1,12 @@
 "use client";
 
 import AddSpaceModal from "@/components/layout/addSpace";
+import { fetcher } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+
+import useSWR from "swr";
 
 interface Space {
   id: string;
@@ -14,22 +17,15 @@ interface Space {
 }
 
 const ListChatPage = () => {
-  const [spaces, setSpaces] = useState<Space[]>([]);
-  const [openChat, setOpenChat] = useState<boolean>(false);
+  const {
+    data: spaces,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR<Space[]>("/api/space/read", fetcher);
 
-  useEffect(() => {
-    const fetchSpaces = async () => {
-      try {
-        const res = await fetch("/api/space/read");
-        if (!res.ok) throw new Error("Failed to fetch spaces");
-        const data = await res.json();
-        setSpaces(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchSpaces();
-  }, []);
+  if (isLoading) return <p className="p-5">Loading...</p>;
+  if (error) return <p className="p-5 text-red-500">Error loading spaces</p>;
 
   return (
     <>
@@ -37,11 +33,11 @@ const ListChatPage = () => {
         <div className="h-screen w-full p-5 border-r border-border space-y-6">
           <div className="flex justify-between items-center">
             <p className="font-bold text-2xl">Spaces</p>
-            <AddSpaceModal />
+            <AddSpaceModal onSuccess={() => mutate()} />
           </div>
           {/* search */}
           <div className="h-[90%] space-y-3 overflow-y-auto">
-            {spaces.map((space) => (
+            {spaces ? spaces?.map((space) => (
               <Link key={space.id} href={`/${space.id}/message`}>
                 <div
                   key={space.id}
@@ -64,7 +60,9 @@ const ListChatPage = () => {
                   </div>
                 </div>
               </Link>
-            ))}
+            )) : 
+            <div className="">Tidak ada space</div>
+            }
           </div>
         </div>
       </div>

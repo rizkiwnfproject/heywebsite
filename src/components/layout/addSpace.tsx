@@ -4,16 +4,13 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { createSpaceSchema } from "@/lib/schema";
@@ -29,7 +26,7 @@ import {
 } from "../ui/form";
 import { useRouter } from "next/navigation";
 
-const AddSpaceModal = () => {
+const AddSpaceModal = ({ onSuccess }: { onSuccess?: () => void }) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof createSpaceSchema>>({
@@ -46,7 +43,8 @@ const AddSpaceModal = () => {
       toast("Sukses", {
         description: "Space berhasil dibuat",
       });
-      router.refresh();
+      form.reset();
+      onSuccess?.();
     } catch (error) {
       toast("Error", {
         description: "Error Add / Edit Teams, please try again",

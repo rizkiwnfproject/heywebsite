@@ -33,11 +33,9 @@ const SignIn = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(val),
+        credentials: "include", 
       });
-      toast("Sukses", {
-        description: "Sign-in berhasil",
-      });
-      router.push("/message");
+      router.push("/");
     } catch (error) {
       console.log(error);
     }

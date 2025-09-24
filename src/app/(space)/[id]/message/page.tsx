@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createMessageSchema } from "@/lib/schema";
+import { fetcher } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EllipsisVertical, Paperclip, SendHorizontal } from "lucide-react";
 import Image from "next/image";
 import React, { FC, use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import useSWR from "swr";
 import z from "zod";
 
 type Params = {
@@ -37,13 +39,21 @@ interface messageProps {
   Space: { id: string; name: string };
 }
 
-const SpaceMessagePage: FC<SpaceMessageProps> = ({ params }) => {
-  const { id } = use(params);
-  const [messages, setMessages] = useState<messageProps[]>([]);
-  const [currentUserId, setCurrentUserId] = useState<string>("");
+export default function SpaceMessagePage({ params }: SpaceMessageProps) {
+  const { id } = params;
+
+  const { data, error, isLoading, mutate } = useSWR(
+    `/api/space/${id}/message/read`,
+    fetcher,
+    { refreshInterval: 2000 }
+  );
+
+  const messages: messageProps[] = data?.messages ?? [];
+  const currentUserId: string = data?.currentUserId ?? "";
 
   const form = useForm<z.infer<typeof createMessageSchema>>({
     resolver: zodResolver(createMessageSchema),
+    defaultValues: { message: "", photo: "" },
   });
 
   const onSubmit = async (val: z.infer<typeof createMessageSchema>) => {
@@ -56,6 +66,8 @@ const SpaceMessagePage: FC<SpaceMessageProps> = ({ params }) => {
       toast("Sukses", {
         description: "Pesan berhasil dikirim",
       });
+      form.reset(); 
+      mutate();
     } catch (error) {
       console.log(error);
       toast("Error", {
@@ -64,17 +76,8 @@ const SpaceMessagePage: FC<SpaceMessageProps> = ({ params }) => {
     }
   };
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      const res = await fetch(`/api/space/${id}/message/read`);
-      if (!res.ok) return;
-      const data = await res.json();
-
-      setMessages(data.messages);
-      setCurrentUserId(data.currentUserId);
-    };
-    fetchMessages();
-  }, [id]);
+  if (isLoading) return <p className="p-5">Loading...</p>;
+  if (error) return <p className="p-5 text-red-500">Error load pesan</p>;
 
   return (
     <>
@@ -184,6 +187,4 @@ const SpaceMessagePage: FC<SpaceMessageProps> = ({ params }) => {
       </div>
     </>
   );
-};
-
-export default SpaceMessagePage;
+}

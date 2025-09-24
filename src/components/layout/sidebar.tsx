@@ -19,12 +19,16 @@ const Sidebar = ({
 }) => {
   const router = useRouter();
   const handleLogout = async () => {
-    await fetch("api/sign-out", { method: "POST" });
-    router.push("/sign-in");
+    try {
+      await fetch("/api/sign-out", { method: "POST" });
+      router.push("/sign-in");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
-      <div className="w-15 h-screen bg-sidebar pt-12 px-2 space-y-6 rounded-br-2xl rounded-tr-2xl">
+      <div className="w-20 h-screen bg-sidebar pt-12 px-2 space-y-6 rounded-br-2xl rounded-tr-2xl">
         <div className="flex flex-col items-center space-y-6 text-white">
           <Tooltip>
             <TooltipTrigger onClick={() => setActivePage("chat")}>

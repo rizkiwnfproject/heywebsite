@@ -13,9 +13,11 @@ export async function GET(
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const {id} = await params
+
   const messages = await prisma.message.findMany({
     where: {
-      spaceId: params.id,
+      spaceId: id,
     },
     include: {
       User: true,
