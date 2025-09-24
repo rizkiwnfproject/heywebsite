@@ -37,3 +37,8 @@ export const createMessageSchema = z.object({
   message: z.string({ message: "Pesan space harus diisi" }),
   photo: z.any().optional(),
 });
+
+export const createNoteSchema = z.object({
+  title: z.string({ message: "Judul note space harus diisi" }),
+  content: z.string().optional()
+});

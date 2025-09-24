@@ -25,10 +25,10 @@ type Params = {
 };
 
 interface SpaceMessageProps {
-  params: Params;
 }
 
 interface messageProps {
+  params: Params;
   id: string;
   message: string;
   photo?: string | null;
