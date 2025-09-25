@@ -43,15 +43,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Session        Session[]
-  SpaceMember    SpaceMember[]
-  Notification   Notification[]
-  Message        Message[]
-  Reaction       Reaction[]
-  Note           Note[]
-  Course         Course[]
-  Space          Space[]
-  CourseProgress CourseProgress[]
+  Session     Session[]
+  SpaceMember SpaceMember[]
+  Message     Message[]
+  Reaction    Reaction[]
+  Note        Note[]
+  Space       Space[]
 }
 
 model Session {
@@ -72,19 +69,17 @@ model Space {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  SpaceMember  SpaceMember[]
-  Invite       Invite[]
-  Notification Notification[]
-  Message      Message[]
-  Note         Note[]
-  Course       Course[]
+  SpaceMember SpaceMember[]
+  Invite      Invite[]
+  Message     Message[]
+  Note        Note[]
 }
 
 model Invite {
   id        String    @id @default(cuid())
   spaceId   String
   Space     Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
-  token     String
+  token     String    @unique
   expiresAt DateTime?
   createdBy String
   isActive  Boolean   @default(true)
@@ -102,18 +97,6 @@ model SpaceMember {
   joinedAt DateTime     @default(now())
 
   @@unique([spaceId, userId])
-}
-
-model Notification {
-  id        String   @id @default(cuid())
-  spaceId   String
-  Space     Space    @relation(fields: [spaceId], references: [id])
-  userId    String
-  User      User     @relation(fields: [userId], references: [id])
-  message   String
-  type      String
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
 }
 
 model Message {
@@ -151,56 +134,6 @@ model Note {
   User      User     @relation(fields: [userId], references: [id])
   title     String
   content   Json?
-  photo     String?
-  link      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model Course {
-  id          String        @id @default(cuid())
-  spaceId     String
-  Space       Space         @relation(fields: [spaceId], references: [id])
-  userId      String
-  User        User          @relation(fields: [userId], references: [id])
-  title       String
-  description String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  CourseTopic CourseTopic[]
-}
-
-model CourseTopic {
-  id         String       @id @default(cuid())
-  courseId   String
-  Course     Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  title      String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  CourseItem CourseItem[]
-}
-
-model CourseItem {
-  id             String           @id @default(cuid())
-  courseTopicId  String
-  CourseTopic    CourseTopic      @relation(fields: [courseTopicId], references: [id], onDelete: Cascade)
-  type           TypeCourseItem
-  title          String?
-  url            String?
-  content        String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  CourseProgress CourseProgress[]
-}
-
-model CourseProgress {
-  id           String     @id @default(cuid())
-  userId       String
-  User         User       @relation(fields: [userId], references: [id])
-  courseItemId String
-  CourseItem   CourseItem @relation(fields: [courseItemId], references: [id])
-  isDone       Boolean    @default(false)
-  updatedAt    DateTime   @default(now())
-
-  @@unique([userId, courseItemId])
 }

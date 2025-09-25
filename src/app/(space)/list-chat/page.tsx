@@ -1,6 +1,7 @@
 "use client";
 
 import AddSpaceModal from "@/components/layout/addSpace";
+import { Separator } from "@/components/ui/separator";
 import { fetcher } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,33 +52,35 @@ const ListChatPage = () => {
                         year: "numeric",
                       }
                     )
-                  : new Date(space.createdAt).toLocaleDateString(
-                      "id-ID",
-                      {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      }
-                    );
+                  : new Date(space.createdAt).toLocaleDateString("id-ID", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    });
 
                 return (
-                  <Link key={space.id} href={`/${space.id}/message`}>
-                    <div className="flex items-center gap-2 p-2 w-full hover:bg-slate-50 rounded">
-                      <Image
-                        src={space.avatar ?? "/images/sign/sign.jpg"}
-                        alt=""
-                        width={50}
-                        height={50}
-                      />
-                      <div className="w-full flex flex-col justify-between">
-                        <div className="w-full flex justify-between items-center">
-                          <p className="font-medium">{space.name}</p>
-                          <p className="text-xs text-slate-400">{lastDate}</p>
+                  <>
+                    <Link key={space.id} href={`/${space.id}/message`}>
+                      <div className="flex items-center gap-2 p-2 w-full hover:bg-slate-50 rounded">
+                        <Image
+                          src={space.avatar ?? "/images/sign/sign.jpg"}
+                          alt=""
+                          width={50}
+                          height={50}
+                        />
+                        <div className="w-full flex flex-col justify-between">
+                          <div className="w-full flex justify-between items-center">
+                            <p className="font-medium">{space.name}</p>
+                            <p className="text-xs text-slate-400">{lastDate}</p>
+                          </div>
+                          <p className="text-xs text-slate-600">
+                            {lastMessage}
+                          </p>
                         </div>
-                        <p className="text-xs text-slate-600">{lastMessage}</p>
                       </div>
-                    </div>
-                  </Link>
+                    </Link>
+                    <Separator className="mt-2"/>
+                  </>
                 );
               })
             ) : (

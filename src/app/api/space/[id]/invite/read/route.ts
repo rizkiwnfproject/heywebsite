@@ -5,18 +5,10 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const { id } = await params;
-  const space = await prisma.space.findUnique({
+  const space = await prisma.invite.findUnique({
     where: { id: id },
     include: {
-      Note: true,
-      SpaceMember: {
-        include: {
-          User: true,
-        },
-        orderBy: { joinedAt: "asc" },
-      },
-      Invite: true,
-      creator: true,
+      Space: true
     },
     
   });

@@ -29,7 +29,7 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
   const { data, error, isLoading } = useSWR<{ notes: Note[] }>(
     `/api/space/${id}/note/read`,
     fetcher,
-    {refreshInterval: 2000}
+    { refreshInterval: 2000 }
   );
 
   if (isLoading) return <p className="p-5">Loading...</p>;
@@ -40,13 +40,14 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
   return (
     <>
       <div className="">
-        <div
-          className="h-15 bg-primary flex items-center p-5 gap-2 cursor-pointer"
-          onClick={() => router.push(`/${id}/detail`)}
-        >
-          <p className="font-semibold">{name}</p>
+        <div className="h-15 bg-primary flex items-center p-5 gap-2 cursor-pointer justify-between">
+          <p className="font-semibold text-xl text-white">{name}</p>
           {/* <EllipsisVertical /> */}
-          <ChevronRight className="w-4 pt-1" />
+          <div className="flex gap-2">
+            <Button variant={"outline"} onClick={() => router.push(`/${id}/detail`)}>Detail</Button>
+            <Button className="bg-yellow-400 hover:bg-yellow-500 text-black">Edit</Button>
+            <Button variant={"destructive"}>Delete</Button>
+          </div>
         </div>
         <div className="bg-slate-100 flex items-center px-5 py-2 space-x-2">
           <AddNoteModal id={id} />

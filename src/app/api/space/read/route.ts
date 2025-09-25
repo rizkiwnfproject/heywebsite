@@ -14,7 +14,7 @@ export async function GET() {
     where: {
       OR: [
         { createdBy: payload.id },
-        { SpaceMember: { some: { userId: payload.id } } },
+        { SpaceMember: { some: { userId: payload.id, status: "ACCEPTED" } } },
       ],
     },
     include: {
