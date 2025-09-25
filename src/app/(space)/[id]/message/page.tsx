@@ -34,7 +34,7 @@ interface messageProps {
   message: string;
   photo?: string | null;
   createdAt: string;
-  User: { id: string; name: string; photo?: string | null };
+  User: { id: string; name: string; avatar?: string | null };
   Space: { id: string; name: string };
 }
 
@@ -101,15 +101,20 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
                 msg.User.id === currentUserId ? "justify-end" : "justify-start"
               }`}
             >
-              {msg.User.id !== currentUserId && (
-                <Image
-                  src={msg.User.photo ?? "/images/sign/sign.jpg"}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-              )}
+              {msg.User.id !== currentUserId &&
+                (msg.User.avatar ? (
+                  <Image
+                    src={msg.User.avatar}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center text-white mr-2">
+                    {msg.User.name.charAt(0)}
+                  </div>
+                ))}
               <div
                 className={`min-w-40 max-w-[40%] p-3 rounded space-y-2 ${
                   msg.User.id === currentUserId

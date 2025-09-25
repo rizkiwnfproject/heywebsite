@@ -6,7 +6,7 @@ const SpacePage = () => {
     <>
     <div className="w-full max-h-screen h-screen flex flex-col justify-center items-center">
       <div className="">
-        <Image src={'/images/space/click.png'} alt='' width={500} height={500}/>
+        <Image src={'/assets/images/space/click.png'} alt='' width={500} height={500} unoptimized/>
       </div>
       <div className="">
         <p>Tolong klik space agar terlihat messagenya</p>

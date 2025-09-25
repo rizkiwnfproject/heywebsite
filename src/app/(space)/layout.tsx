@@ -4,32 +4,34 @@ import "../globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Sidebar from "@/components/layout/sidebar";
 import { useState } from "react";
-import ListChatPage from "./list-chat/page";
+import ListChatPage from "./space/page";
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [activePage, setActivePage] = useState("chat"); // default "chat"
-
   return (
-    <html lang="en">
-      <body className="">
-        <main>
-          <div className="w-full max-h-screen flex">
-            <Sidebar setActivePage={setActivePage} />
-            <div className="w-[25%] ">
-              {activePage === "chat" && <div><ListChatPage /></div>}
-              {activePage === "settings" && <div>⚙️ Settings Page</div>}
-            </div>
-            <div className="flex-1">
-              {children}
-            </div>
-          </div>
-        </main>
-        <Toaster />
-      </body>
-    </html>
+    <>
+      <main>
+        <div className="w-full max-h-screen flex">
+          <Sidebar />
+          <div className="w-full">{children}</div>
+          {/* {activePage === "chat" && (
+            <>
+              <div className="w-[25%] ">
+                <div>
+                  <ListChatPage />
+                </div>
+              </div>
+              <div className="flex-1">{children}</div>
+            </>
+          )}
+
+          {activePage !== "chat" && <div className="w-full">{children}</div>} */}
+        </div>
+      </main>
+      <Toaster />
+    </>
   );
 }

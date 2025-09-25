@@ -101,7 +101,7 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
             </Button>
             {space.role === "ADMIN" && (
               <>
-                <Button disabled className="bg-yellow-400 hover:bg-yellow-500 text-black">
+                <Button onClick={() => router.push(`/${id}/edit`)} className="bg-yellow-400 hover:bg-yellow-500 text-black">
                   Edit
                 </Button>
                 <Button disabled variant={"destructive"}>Delete</Button>

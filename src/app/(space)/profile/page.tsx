@@ -1,0 +1,77 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { fetcher } from "@/lib/utils";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React from "react";
+import useSWR from "swr";
+
+const ProfilePage = () => {
+  const router = useRouter();
+
+  const {
+    data: profile,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR("/api/me/read", fetcher);
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <p className="text-red-500">Failed to load profile</p>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <p>No profile data found</p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="h-screen flex flex-col justify-center items-center">
+        <div className="p-10 h-[500px] w-[500px] border border-mutate rounded space-y-2">
+          <div className="w-full flex items-center justify-center mb-5">
+            <div className="w-36 h-36 rounded-full bg-slate-700 flex" />
+          </div>
+          <div className="grid grid-cols-2 space-y-3 ">
+            <p className="font-semibold">Name</p>
+            <p>: {profile.name}</p>
+            <p className="font-semibold">Username</p>
+            <p>: {profile.username}</p>
+            <p className="font-semibold">Email</p>
+            <p>: {profile.email}</p>
+            <p className="font-semibold">Number Phone</p>
+            <p>: {profile.number_phone}</p>
+          </div>
+          <Separator />
+          <div className="grid grid-cols-2 ">
+            <p className="font-semibold">Total Space</p>
+            <p>: 5</p>
+          </div>
+          <Separator />
+          <Link href="/profile-edit">
+            <Button className="w-full mt-5 font-semibold">Edit Profile</Button>
+          </Link>{" "}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ProfilePage;

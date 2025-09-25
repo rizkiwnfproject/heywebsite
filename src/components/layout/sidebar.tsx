@@ -1,22 +1,15 @@
 import React from "react";
 
-import Image from "next/image";
-import { LogOut, MessageCircleMore, Settings, User } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-
+import { LogOut, MessageCircleMore, User } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
-const Sidebar = ({
-  setActivePage,
-}: {
-  setActivePage: (page: string) => void;
-}) => {
+const Sidebar = () => {
   const router = useRouter();
   const handleLogout = async () => {
     try {
@@ -26,33 +19,37 @@ const Sidebar = ({
       console.log(error);
     }
   };
+
   return (
     <>
-      <div className="w-15 h-screen bg-primary pt-12 px-2 space-y-6 rounded-br-2xl rounded-tr-2xl">
-        <div className="flex flex-col items-center space-y-6 text-white">
-          <Tooltip>
-            <TooltipTrigger onClick={() => setActivePage("chat")}>
+      <div className="w-[10%] h-screen bg-slate-900 pt-12 px-2 space-y-6 ">
+        <div
+          onClick={() => router.push("/space")}
+          className="flex flex-col items-center space-y-6 text-white"
+        >
+          <Button variant={"ghost"}>
+            <div className="flex items-center gap-2">
               <MessageCircleMore />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Space</p>
-            </TooltipContent>
-          </Tooltip>
+              Spaces
+            </div>
+          </Button>
         </div>
         <div className="space-y-6">
-          {/* <div className="" onClick={() => setActivePage("settings")}> */}
           <div className="text-white w-full flex justify-center items-center ">
-            <User />
+            <Button variant={"ghost"}>
+              <div className="flex items-center gap-2">
+                <User />
+                Profile
+              </div>
+            </Button>
           </div>
           <div className="flex flex-col items-center space-y-6 text-white">
-            <Tooltip>
-              <TooltipTrigger onClick={handleLogout}>
+            <Button variant={"ghost"} onClick={handleLogout}>
+              <div className="flex items-center gap-2">
                 <LogOut className="text-destructive" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Logout</p>
-              </TooltipContent>
-            </Tooltip>
+                Logout
+              </div>
+            </Button>
           </div>
         </div>
       </div>

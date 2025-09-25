@@ -19,7 +19,7 @@ interface Space {
   Message: { id: string; message: string; createdAt: string }[];
 }
 
-const ListChatPage = () => {
+const ListSpacePage = () => {
   const {
     data: spaces,
     error,
@@ -32,7 +32,7 @@ const ListChatPage = () => {
 
   return (
     <>
-      <div className="flex ">
+      <div className="flex w-[30%]">
         <div className="h-screen w-full p-5 border-r border-border space-y-6">
           <div className="flex justify-between items-center">
             <p className="font-bold text-2xl">Spaces</p>
@@ -62,12 +62,18 @@ const ListChatPage = () => {
                   <>
                     <Link key={space.id} href={`/${space.id}/message`}>
                       <div className="flex items-center gap-2 p-2 w-full hover:bg-slate-50 rounded">
-                        <Image
-                          src={space.avatar ?? "/images/sign/sign.jpg"}
-                          alt=""
-                          width={50}
-                          height={50}
-                        />
+                        {space.avatar ? (
+                          <Image
+                            src={space.avatar}
+                            alt=""
+                            width={50}
+                            height={50}
+                          />
+                        ) : (
+                          <div className="w-12 h-10 bg-slate-700 rounded-full flex items-center justify-center text-white">
+                            {space.name.charAt(0)}
+                          </div>
+                        )}
                         <div className="w-full flex flex-col justify-between">
                           <div className="w-full flex justify-between items-center">
                             <p className="font-medium">{space.name}</p>
@@ -79,7 +85,7 @@ const ListChatPage = () => {
                         </div>
                       </div>
                     </Link>
-                    <Separator className="mt-2"/>
+                    <Separator className="mt-2" />
                   </>
                 );
               })
@@ -93,4 +99,4 @@ const ListChatPage = () => {
   );
 };
 
-export default ListChatPage;
+export default ListSpacePage;
