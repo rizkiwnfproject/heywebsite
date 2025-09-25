@@ -151,7 +151,7 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
                     <FormItem>
                       <FormControl>
                         <Input
-                          className="bg-white pl-16  h-12 rounded-none focus-visible:border-0 focus-visible:border-t focus-visible:ring-0 border-0 border-t"
+                          className="bg-white  h-12 rounded-none focus-visible:border-0 focus-visible:border-t focus-visible:ring-0 border-0 border-t"
                           placeholder="Tulis Pesan"
                           {...field}
                         />
@@ -160,7 +160,7 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="photo"
                   render={({ field }) => (
@@ -179,7 +179,7 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <Button className="absolute top-2 right-3  p-2 rounded">
                   <SendHorizontal />
                 </Button>

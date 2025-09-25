@@ -1,7 +1,7 @@
 import React from "react";
 
 import Image from "next/image";
-import { LogOut, MessageCircleMore, Settings } from "lucide-react";
+import { LogOut, MessageCircleMore, Settings, User } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 import {
@@ -28,7 +28,7 @@ const Sidebar = ({
   };
   return (
     <>
-      <div className="w-20 h-screen bg-sidebar pt-12 px-2 space-y-6 rounded-br-2xl rounded-tr-2xl">
+      <div className="w-15 h-screen bg-primary pt-12 px-2 space-y-6 rounded-br-2xl rounded-tr-2xl">
         <div className="flex flex-col items-center space-y-6 text-white">
           <Tooltip>
             <TooltipTrigger onClick={() => setActivePage("chat")}>
@@ -40,15 +40,9 @@ const Sidebar = ({
           </Tooltip>
         </div>
         <div className="space-y-6">
-          <Separator />
-          <div className="" onClick={() => setActivePage("settings")}>
-            <Image
-              width={50}
-              height={50}
-              src={"/images/sign/sign.jpg"}
-              alt=""
-              className="rounded-full"
-            />
+          {/* <div className="" onClick={() => setActivePage("settings")}> */}
+          <div className="text-white w-full flex justify-center items-center ">
+            <User />
           </div>
           <div className="flex flex-col items-center space-y-6 text-white">
             <Tooltip>

@@ -25,5 +25,6 @@ export async function GET(
     },
     orderBy: { createdAt: "asc" },
   });
+
   return Response.json({ notes, currentUserId: payload.id });
 }

@@ -34,6 +34,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
   if (isLoading) return <p className="p-5">Loading...</p>;
   if (error) return <p className="p-5 text-red-500">Error loading note</p>;
 
+
   return (
     <div className="max-h-screen h-screen w-full flex flex-col">
       <div
@@ -48,10 +49,21 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
         <div className="p-10 h-full space-y-5">
           <div className="w-full flex justify-between">
             <h1 className="text-xl font-bold">{note.title}</h1>
-            <div className="flex gap-3">
-              <Button className="rounded" onClick={() => router.push(`/${params.id}/note/${params.noteId}/edit`)}>Edit</Button>
-              <Button variant={"destructive"} className="rounded">Hapus</Button>
-            </div>
+            {note.role === "ADMIN" && (
+              <div className="flex gap-3">
+                <Button
+                  className="rounded"
+                  onClick={() =>
+                    router.push(`/${params.id}/note/${params.noteId}/edit`)
+                  }
+                >
+                  Edit
+                </Button>
+                <Button disabled variant={"destructive"} className="rounded">
+                  Hapus
+                </Button>
+              </div>
+            )}
           </div>
           {typeof note.content === "string" && (
             <div

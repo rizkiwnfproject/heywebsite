@@ -17,15 +17,15 @@ export async function POST(
   if (!payload)
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
 
-  const member = await prisma.spaceMember.findUnique({
-    where: { spaceId_userId: { spaceId: params.id, userId: payload.id } },
-  });
-  if (!member || member.role !== "ADMIN") {
-    return NextResponse.json(
-      { error: "Only admins can generate invites" },
-      { status: 403 }
-    );
-  }
+  // const member = await prisma.spaceMember.findUnique({
+  //   where: { spaceId_userId: { spaceId: params.id, userId: payload.id } },
+  // });
+  // if (!member || member.role !== "ADMIN") {
+  //   return NextResponse.json(
+  //     { error: "Only admins can generate invites" },
+  //     { status: 403 }
+  //   );
+  // }
 
   const token = makeId(12);
 

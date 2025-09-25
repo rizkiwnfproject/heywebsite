@@ -26,7 +26,7 @@ interface SpaceProps {
   createdAt: string;
   permission: boolean;
   role: string;
-  SpaceMember: { id: string; role: string; status: string }[];
+  SpaceMember: any[];
   User: string;
   creator: { id: string; name: string };
 }
@@ -41,6 +41,8 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
     isLoading,
     mutate,
   } = useSWR<SpaceProps>(`/api/space/${id}/detail/read`, fetcher);
+
+  console.log(space);
 
   if (isLoading) return <p className="p-5">Loading...</p>;
   if (error) return <p className="p-5 text-red-500">Error loading spaces</p>;
@@ -74,7 +76,6 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
-        
       });
       router.refresh();
     } catch (error) {
@@ -93,13 +94,20 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
             <ChevronLeft />
             <p>Kembali</p>
           </div>
-          <Button
-            onClick={handleInviteSpace}
-            className="bg-yellow-400 hover:bg-yellow-500 text-black"
-          >
-            <Link />
-            <p className="font-semibold">Share</p>
-          </Button>
+          <div className="space-x-2 flex items-center font-semibold">
+            <Button onClick={handleInviteSpace} variant={"outline"}>
+              <Link />
+              <p className="">Share</p>
+            </Button>
+            {space.role === "ADMIN" && (
+              <>
+                <Button disabled className="bg-yellow-400 hover:bg-yellow-500 text-black">
+                  Edit
+                </Button>
+                <Button disabled variant={"destructive"}>Delete</Button>
+              </>
+            )}
+          </div>
         </div>
         <div className="p-10 space-y-4 ">
           <div className="grid lg:grid-cols-3">
@@ -131,7 +139,11 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
             </div>
           </div>
           <Separator />
-          <div className="grid grid-cols-2 gap-3">
+          <div
+            className={`grid  ${
+              space.role === "ADMIN" ? "grid-cols-2" : "grid-cols-1"
+            } gap-3`}
+          >
             <div className="border border-border max-h-[325px] h-full p-5 space-y-3 overflow-y-auto">
               <p className="font-semibold">Member Space</p>
               <div className="space-y-2">
@@ -152,42 +164,44 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
                 ))}
               </div>
             </div>
-            <div className="border border-border max-h-[325px] h-full p-5 space-y-3 overflow-y-auto">
-              <p className="font-semibold">Invite Member Space</p>
-              <div className="space-y-2">
-                {space.SpaceMember.filter(
-                  (member) => member.status === "PENDING"
-                ).map((member) => (
-                  <div
-                    key={member.id}
-                    className="w-full flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gray-500 rounded-full" />
-                      <p className="text-sm">{member.User.name}</p>
+            {space.role === "ADMIN" && (
+              <div className="border border-border max-h-[325px] h-full p-5 space-y-3 overflow-y-auto">
+                <p className="font-semibold">Invite Member Space</p>
+                <div className="space-y-2">
+                  {space.SpaceMember.filter(
+                    (member) => member.status === "PENDING"
+                  ).map((member) => (
+                    <div
+                      key={member.id}
+                      className="w-full flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gray-500 rounded-full" />
+                        <p className="text-sm">{member.User.name}</p>
+                      </div>
+                      <div className="space-x-2">
+                        <Button
+                          onClick={() =>
+                            handleStatusMember(member.id, "REJECTED")
+                          }
+                          variant={"destructive"}
+                        >
+                          <X />
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            handleStatusMember(member.id, "ACCEPTED")
+                          }
+                          className="bg-green-700 hover:bg-green-800"
+                        >
+                          <Check />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="space-x-2">
-                      <Button
-                        onClick={() =>
-                          handleStatusMember(member.id, "REJECTED")
-                        }
-                        variant={"destructive"}
-                      >
-                        <X />
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          handleStatusMember(member.id, "ACCEPTED")
-                        }
-                        className="bg-green-700 hover:bg-green-800"
-                      >
-                        <Check />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
