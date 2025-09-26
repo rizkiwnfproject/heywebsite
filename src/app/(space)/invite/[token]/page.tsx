@@ -3,7 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function InvitePage({ params }: { params: { token: string } }) {
+interface InvitePageProps {
+  params: {
+    token: string;
+  };
+}
+
+export default function InvitePage({ params }: InvitePageProps) {
   const router = useRouter();
 
   useEffect(() => {

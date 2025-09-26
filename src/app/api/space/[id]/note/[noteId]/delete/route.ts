@@ -4,11 +4,10 @@ import { verifyJwt } from "@/lib/token";
 import prisma from "../../../../../../../../lib/prisma";
 
 export async function DELETE(
-req: NextRequest,
-  context: { params: Promise<{ id: string, noteId:string }> }
+  req: NextRequest,
+  { params }: { params: { id: string; noteId: string } }
 ) {
-    const { id, noteId } = await context.params;
-
+  const { id, noteId } = params;
 
   // cek token
   const cookieStore = cookies();
@@ -36,7 +35,10 @@ req: NextRequest,
     },
   });
 
-  if (!spaceMember || (spaceMember.role !== "ADMIN" && note.userId !== payload.id)) {
+  if (
+    !spaceMember ||
+    (spaceMember.role !== "ADMIN" && note.userId !== payload.id)
+  ) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

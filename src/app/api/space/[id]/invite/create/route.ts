@@ -6,9 +6,9 @@ import { makeId } from "@/lib/utils";
 
 export async function POST(
   req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params;
+  const { id } = params;
 
   const cookieStore = cookies();
   const tokenCookie = (await cookieStore).get("token")?.value;
