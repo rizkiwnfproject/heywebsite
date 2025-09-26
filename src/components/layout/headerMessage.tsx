@@ -74,7 +74,7 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
             </Link>
           </div>
         </div>
-        <div className="bg-slate-100 flex items-center px-5 py-3 space-x-2 border-b border-b-slate-300">
+        <div className="bg-slate-100 flex items-center px-5 py-3 space-x-2 border-b border-b-slate-300 overflow-x-auto">
           {space?.role === "ADMIN" && <AddNoteModal id={spaceId} />}
           {notes.length > 0 ? (
             notes.map((note) => (
