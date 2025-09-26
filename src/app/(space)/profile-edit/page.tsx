@@ -110,6 +110,7 @@ export default function ProfileEditPage() {
                 control={form.control}
                 name="username"
                 label="Username"
+                disabled={isDisabled}
                 placeholder="Please enter your username"
                 formDescription="username only can be updated once every 7 days"
               />
