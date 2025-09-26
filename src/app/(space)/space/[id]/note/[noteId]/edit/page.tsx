@@ -5,25 +5,17 @@ import { Input } from "@/components/ui/input";
 import { createNoteSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import BlockEditor from "@/components/layout/blockEditor";
 
-type Params = {
-  id: string;
-  noteId: string;
-};
-
-interface SpaceNoteProps {
-  params: Params;
-}
-
-export default function SpaceNotePage({ params }: SpaceNoteProps) {
+export default function SpaceNotePage() {
   const router = useRouter();
+  const params = useParams<{ id: string; noteId: string }>(); 
+  const id = params.id;
+  const noteId = params.noteId;
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -35,9 +27,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await fetch(
-          `/api/space/${params.id}/note/${params.noteId}/read`
-        );
+        const res = await fetch(`/api/space/${id}/note/${noteId}/read`);
         if (!res.ok) throw new Error("Failed to fetch note");
         const note = await res.json();
 
@@ -54,17 +44,14 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
 
   const onSubmit = async (val: z.infer<typeof createNoteSchema>) => {
     try {
-      const res = await fetch(
-        `/api/space/${params.id}/note/${params.noteId}/update`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...val, content }),
-        }
-      );
+      const res = await fetch(`/api/space/${id}/note/${noteId}/update`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...val, content }),
+      });
       if (!res.ok) throw new Error("Failed to update note");
 
-      router.push(`/space/${params.id}/note/${params.noteId}`);
+      router.push(`/space/${id}/note/${noteId}`);
     } catch (error) {
       console.error(error);
     }
@@ -76,7 +63,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
     <div className="max-h-screen h-screen w-full flex flex-col">
       {/* header */}
       <div
-        onClick={() => router.push(`/space/${params.id}/message`)}
+        onClick={() => router.push(`/space/${id}/message`)}
         className="h-15 bg-slate-900 flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />

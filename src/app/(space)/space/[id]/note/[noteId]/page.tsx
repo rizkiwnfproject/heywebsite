@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { createNoteSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -14,22 +14,18 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-type Params = {
-  id: string;
-  noteId: string;
-};
 
-interface SpaceNoteProps {
-  params: Params;
-}
-
-export default function SpaceNotePage({ params }: SpaceNoteProps) {
+export default function SpaceNotePage() {
   const router = useRouter();
+  const params = useParams<{ id: string, noteId:string }>(); 
+  const id = params.id;
+  const noteId = params.noteId;
+
   const {
     data: note,
     isLoading,
     error,
-  } = useSWR(`/api/space/${params.id}/note/${params.noteId}/read`, fetcher, { refreshInterval: 2000 });
+  } = useSWR(`/api/space/${id}/note/${noteId}/read`, fetcher, { refreshInterval: 2000 });
 
   if (isLoading) return <p className="p-5">Loading...</p>;
   if (error) return <p className="p-5 text-red-500">Error loading note</p>;
@@ -38,7 +34,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
   return (
     <div className="max-h-screen h-screen w-full flex flex-col">
       <div
-        onClick={() => router.push(`/space/${params.id}/message`)}
+        onClick={() => router.push(`/space/${id}/message`)}
         className="h-15 bg-slate-900 flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />
@@ -54,7 +50,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
                 <Button
                   className="rounded"
                   onClick={() =>
-                    router.push(`/space/${params.id}/note/${params.noteId}/edit`)
+                    router.push(`/space/${id}/note/${noteId}/edit`)
                   }
                 >
                   Edit

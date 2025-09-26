@@ -16,17 +16,10 @@ import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import z from "zod";
 
-type Params = {
-  id: string;
-};
 
-interface SpaceEditProps {
-  params: Params;
-}
-
-export default function SpaceEditPage({ params }: SpaceEditProps) {
+export default function SpaceEditPage() {
   const router = useRouter();
-  const { id } = useParams<{ id: string }>(); // ✅ ambil params di client
+  const { id } = useParams<{ id: string }>(); 
 
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);

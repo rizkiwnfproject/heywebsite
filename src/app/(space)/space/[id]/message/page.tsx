@@ -9,27 +9,19 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createMessageSchema } from "@/lib/schema";
 import { supabaseGetFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EllipsisVertical, Paperclip, SendHorizontal } from "lucide-react";
+import { EllipsisVertical, SendHorizontal } from "lucide-react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import useSWR from "swr";
 import z from "zod";
-
-type Params = {
-  id: string;
-};
-
-interface SpaceMessageProps {
-  params: Params;
-}
 
 interface messageProps {
   id: string;
@@ -40,8 +32,9 @@ interface messageProps {
   Space: { id: string; name: string };
 }
 
-export default function SpaceMessagePage({ params }: SpaceMessageProps) {
-  const { id } = params;
+export default function SpaceMessagePage() {
+  const params = useParams<{ id: string }>();
+  const id = params.id;
 
   const { data: space, error: spaceError } = useSWR(
     `/api/space/${id}/detail/read`,

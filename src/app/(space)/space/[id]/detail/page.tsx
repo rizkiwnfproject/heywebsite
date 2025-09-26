@@ -6,17 +6,9 @@ import { supabaseGetFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import { Check, ChevronLeft, Link, X } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
-
-type Params = {
-  id: string;
-};
-
-interface SpaceDetailProps {
-  params: Params;
-}
 
 interface SpaceProps {
   id: string;
@@ -32,8 +24,9 @@ interface SpaceProps {
   creator: { id: string; name: string };
 }
 
-const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
-  const { id } = params;
+const SpaceDetailPage = () => {
+    const params = useParams<{ id: string }>(); 
+  const id = params.id;
   const router = useRouter();
 
   const {
