@@ -22,7 +22,6 @@ export async function GET(
     },
     include: {
       User: true,
-      Reaction: true,
       Space: true,
     },
     orderBy: { createdAt: "asc" },
