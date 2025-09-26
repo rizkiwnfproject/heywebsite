@@ -84,10 +84,12 @@ export default function SpaceNotePage() {
               />
             </FormGridRow>
             <FormGridRow label="Field note" align="start">
-              <BlockEditor
-                initialContent={content}
-                onChange={(val) => setContent(val)}
-              />
+              <div className="border rounded p-2 blocknote-container">
+                <BlockEditor
+                  initialContent={content}
+                  onChange={(val) => setContent(val)}
+                />
+              </div>
             </FormGridRow>
 
             <button

@@ -120,4 +120,38 @@
   body {
     @apply bg-background text-foreground;
   }
+  .bn-side-menu {
+    display: none !important;
+  }
+
+  .bn-drag-handle {
+    display: none !important;
+  }
+
+  .bn-floating-toolbar-content button {
+    margin: 0 2px;
+  }
+
+  .bn-floating-toolbar {
+    padding: 4px 6px;
+    border-radius: 6px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .bn-floating-toolbar {
+    display: none !important;
+  }
+
+  .bn-block-type-select .bn-dropdown-button {
+    background-color: #f1f1f1 !important; 
+    border-radius: 6px;
+    padding: 4px 8px;
+    color: #333 !important;
+    opacity: 1 !important;
+  }
+
+  .bn-block-type-select .bn-dropdown-button:hover {
+    background-color: #e2e2e2 !important;
+  }
 }
