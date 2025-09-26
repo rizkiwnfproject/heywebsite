@@ -6,7 +6,7 @@ import { supabaseGetFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import useSWR from "swr";
 
@@ -29,7 +29,7 @@ const ListSpacePage = () => {
   } = useSWR<Space[]>("/api/space/read", fetcher);
 
   if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="p-5 text-red-500">Error loading spaces</p>;
+  if (error) return <p className="p-5">Please.. refresh this page</p>
 
   return (
     <>

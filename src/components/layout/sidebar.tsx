@@ -1,11 +1,7 @@
-import React from "react";
+"use client";
 
+import React from "react";
 import { LogOut, MessageCircleMore, User } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 

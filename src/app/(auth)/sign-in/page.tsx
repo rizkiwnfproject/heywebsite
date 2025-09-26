@@ -8,16 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import TextInputField from "@/components/layout/textInputField";
+import AuthTitle from "@/components/layout/authTitle";
+
 
 const SignIn = () => {
   const router = useRouter();
@@ -37,7 +34,8 @@ const SignIn = () => {
 
       if (!res.ok) {
         toast("Failed to login", {
-          description: "Username or email wrong, please check again", className: 'text-slate-900'
+          description: "Username or email wrong, please check again",
+          className: "text-slate-900",
         });
         throw new Error("Login gagal");
       }
@@ -49,60 +47,28 @@ const SignIn = () => {
   };
   return (
     <div className="form-section container max-w-[1130px] w-full mx-auto flex flex-col gap-[30px] p-5">
-      <div className="title flex flex-col gap-1">
-        <h1 className="font-bold text-[32px] leading-[48px]">Sign In</h1>
-        <p className="font-medium text-sm md:text-lg leading-[27px]">
-          Sign in to reconnect with your space
-        </p>
-      </div>
+      <AuthTitle title="Sign In" subtitle="Sign in to reconnect with your space" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-          <FormField
+          <TextInputField
             control={form.control}
             name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="Please enter your username" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Username"
+            placeholder="Please enter your username"
           />
-          <FormField
+          <TextInputField
             control={form.control}
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="Please enter your email"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Email"
+            type="email"
+            placeholder="Please enter your email"
           />
-          <FormField
+          <TextInputField
             control={form.control}
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Please enter your password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Password"
+            type="password"
+            placeholder="Please enter your password"
           />
 
           <Button type="submit" className="w-full">

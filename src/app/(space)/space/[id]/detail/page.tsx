@@ -34,7 +34,7 @@ const SpaceDetailPage = () => {
     error,
     isLoading,
     mutate,
-  } = useSWR<SpaceProps>(`/api/space/${id}/detail/read`, fetcher);
+  } = useSWR<SpaceProps>(`/api/space/${id}/detail/read`, fetcher, {refreshInterval: 2000});
 
   console.log(space);
 
@@ -130,13 +130,13 @@ const SpaceDetailPage = () => {
                 </p>
               </div>
               <div className="p-5 border border-border space-y-3 rounded-lg flex items-center justify-between">
-                <p className="font-semibold">Permission space for private</p>
+                <p className="font-semibold">Permission space </p>
                 <p
                   className={`${
                     space.permission ? "bg-primary" : "bg-destructive"
                   } px-4 py-1 rounded font-semibold text-white`}
                 >
-                  {space.permission ? "True" : "False"}
+                  {space.permission ? "Private" : "Public"}
                 </p>
               </div>
             </div>

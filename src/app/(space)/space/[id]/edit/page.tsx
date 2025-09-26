@@ -1,28 +1,28 @@
 "use client";
 
+import FormGridRow from "@/components/layout/FormGridRow";
+import ImageUploader from "@/components/layout/imageUploader";
+import TextInputField from "@/components/layout/textInputField";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { updateSpaceSchema } from "@/lib/schema";
-import { supabaseDeleteFile, supabaseUploadFile } from "@/lib/supabase";
+import {
+  supabaseDeleteFile,
+  supabaseGetFile,
+  supabaseUploadFile,
+} from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft } from "lucide-react";
-import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import z from "zod";
 
-
 export default function SpaceEditPage() {
   const router = useRouter();
-  const { id } = useParams<{ id: string }>(); 
-
-  const [preview, setPreview] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { id } = useParams<{ id: string }>();
 
   const { data: space, isLoading } = useSWR(
     `/api/space/${id}/detail/read`,
@@ -47,13 +47,6 @@ export default function SpaceEditPage() {
       });
     }
   }, [space, form]);
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
-  };
 
   const onSubmit = async (val: z.infer<typeof updateSpaceSchema>) => {
     try {
@@ -98,6 +91,10 @@ export default function SpaceEditPage() {
 
   if (isLoading) return <p className="p-5">Loading...</p>;
 
+  const avatarUrl = space?.avatar
+    ? supabaseGetFile(space.avatar, "space")
+    : null;
+
   return (
     <div className="max-h-screen h-screen w-full flex flex-col">
       <div
@@ -111,112 +108,52 @@ export default function SpaceEditPage() {
       <div className="p-10 h-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
-            <div className="grid grid-cols-6 items-start">
-              <div className="col-span-2 font-semibold">Photo</div>
-              <div className="col-span-4 flex items-center gap-4">
-                <div
-                  className="w-36 h-36 rounded-full bg-slate-700 flex text-white items-center justify-center text-5xl cursor-pointer overflow-hidden"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  {preview ? (
-                    <Image
-                      src={preview}
-                      alt="Preview"
-                      width={144}
-                      height={144}
-                      className="object-cover w-36 h-36 rounded-full"
-                    />
-                  ) : (
-                    <span>+</span>
-                  )}
-                </div>
-                <FormField
+            <FormGridRow label="Photo" align="start">
+              <div className="flex items-center gap-4">
+                <ImageUploader
                   control={form.control}
                   name="avatar"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const files = e.target.files;
-                            if (files && files[0]) {
-                              field.onChange(files);
-                              setPreview(URL.createObjectURL(files[0]));
-                            }
-                          }}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
+                  photoUrl={avatarUrl}
                 />
               </div>
-            </div>
-            <div className="grid grid-cols-6 items-center">
-              <div className="col-span-2 font-semibold">Space Name</div>
-              <div className="col-span-4">
+            </FormGridRow>
+            <FormGridRow label="Space Name">
+              <TextInputField
+                control={form.control}
+                name="name"
+                className="p-5"
+                placeholder="Please enter your space name"
+              />
+            </FormGridRow>
+            <FormGridRow label="Space Description">
+              <TextInputField
+                control={form.control}
+                name="description"
+                className="min-h-[150px]"
+                placeholder="Please enter your space description"
+                input={false}
+              />
+            </FormGridRow>
+            <FormGridRow label="Permission">
+              <div className="flex gap-4 items-center">
+                <p>Public</p>
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="permission"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
-                          className="rounded p-5"
-                          placeholder="Please enter space name"
-                          {...field}
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
+                <p>Private</p>
               </div>
-            </div>
-            <div className="grid grid-cols-6 items-start">
-              <div className="col-span-2 font-semibold">Space Description</div>
-              <div className="col-span-4">
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Textarea
-                          className="min-h-[150px]"
-                          placeholder="Please enter space description"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-6 items-center">
-              <div className="col-span-2 font-semibold">Permission</div>
-              <div className="col-span-4">
-                <div className="flex gap-4 items-center">
-                  <p>Public</p>
-                  <FormField
-                    control={form.control}
-                    name="permission"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <p>Private</p>
-                </div>
-              </div>
-            </div>
-
+            </FormGridRow>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded w-full"

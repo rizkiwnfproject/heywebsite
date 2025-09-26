@@ -1,13 +1,13 @@
 "use client";
 
-import { ChevronRight, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { Button } from "../ui/button";
 import AddNoteModal from "./addNote";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
-import { getCurrentUser } from "@/lib/auth";
+import Link from "next/link";
 
 interface HeaderMessageProps {
   name: string;
@@ -41,7 +41,7 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
   );
 
   if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="p-5 text-red-500">Error loading notes</p>;
+  if (error) return <p className="p-5">Please.. refresh this page</p>;
 
   const notes = data?.notes ?? [];
 
@@ -51,23 +51,28 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
         <div className="h-15 bg-slate-900 flex items-center p-5 gap-2 cursor-pointer justify-between">
           <p className="font-semibold text-xl text-white">{name}</p>
           <div className="flex gap-2">
-            <Button onClick={() => router.push(`/space/${spaceId}/detail`)}>
-              <Info />
-              Detail
-            </Button>
+            <Link href={`/space/${spaceId}/detail`}>
+              <Button>
+                <Info />
+                Detail
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="bg-slate-100 flex items-center px-5 py-3 space-x-2 border-b border-b-slate-300">
           {space?.role === "ADMIN" && <AddNoteModal id={spaceId} />}
-          {notes.length > 0 ? notes.map((note) => (
-            <Button
-              key={note.id}
-              onClick={() => router.push(`/space/${spaceId}/note/${note.id}`)}
-              className="flex items-center gap-2 px-3 py-1  rounded"
-            >
-              <p>{note.title} </p>
-            </Button>
-          )): (
+          {notes.length > 0 ? (
+            notes.map((note) => (
+              <Link href={`/space/${spaceId}/note/${note.id}`}>
+                <Button
+                  key={note.id}
+                  className="flex items-center gap-2 px-3 py-1  rounded"
+                >
+                  <p>{note.title} </p>
+                </Button>
+              </Link>
+            ))
+          ) : (
             <Button variant={"outline"}>No notes yet</Button>
           )}
         </div>

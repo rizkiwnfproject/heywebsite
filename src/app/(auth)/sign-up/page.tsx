@@ -8,16 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import TextInputField from "@/components/layout/textInputField";
+import AuthTitle from "@/components/layout/authTitle";
 
 const SignUp = () => {
   const router = useRouter();
@@ -46,80 +42,41 @@ const SignUp = () => {
   };
   return (
     <div className="form-section container max-w-[1130px] w-full mx-auto flex flex-col gap-[30px] p-5">
-      <div className="title flex flex-col gap-1">
-        <h1 className="font-bold text-[32px] leading-[48px] ">Sign Up</h1>
-        <p className="font-medium text-sm md:text-lg leading-[27px] ">
-          Join now and explore new spaces
-        </p>
-      </div>
+      <AuthTitle title="Sign Up" subtitle="Join now and explore new spaces" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-          <FormField
+          <TextInputField
             control={form.control}
             name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nama</FormLabel>
-                <FormControl>
-                  <Input placeholder="Please enter your name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Name"
+            placeholder="Please enter your name"
           />
-          <FormField
+          <TextInputField
             control={form.control}
             name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="Please enter your username" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Username"
+            placeholder="Please enter your username"
           />
-          <FormField
+          <TextInputField
             control={form.control}
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="Please enter your email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Email"
+            type="email"
+            placeholder="Please enter your email"
           />
-          <FormField
+          <TextInputField
             control={form.control}
             name="number_phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nomor Telepon</FormLabel>
-                <FormControl>
-                  <Input placeholder="Please enter your phone number" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Phone Number"
+            placeholder="Please enter your phone number"
           />
-          <FormField
+          <TextInputField
             control={form.control}
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="Please enter your password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Password"
+            type="password"
+            placeholder="Please enter your password"
           />
-
           <Button type="submit" className="w-full">
             Sign Up
           </Button>

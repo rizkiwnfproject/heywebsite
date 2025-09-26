@@ -7,7 +7,7 @@ export function middleware(req: NextRequest) {
 
   const payload = token ? verifyJwt(token) : null;
 
-  console.log("Middleware check:", { pathname, token, payload });
+  // console.log("Middleware check:", { pathname, token, payload });
 
   const isAuthPage = pathname === "/sign-in" || pathname === "/sign-up";
 

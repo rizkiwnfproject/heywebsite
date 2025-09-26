@@ -10,10 +10,12 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import BlockEditor from "@/components/layout/blockEditor";
+import FormGridRow from "@/components/layout/FormGridRow";
+import TextInputField from "@/components/layout/textInputField";
 
 export default function SpaceNotePage() {
   const router = useRouter();
-  const params = useParams<{ id: string; noteId: string }>(); 
+  const params = useParams<{ id: string; noteId: string }>();
   const id = params.id;
   const noteId = params.noteId;
   const [content, setContent] = useState("");
@@ -73,38 +75,20 @@ export default function SpaceNotePage() {
       <div className="p-10 h-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
-            {/* Title */}
-            <div className="grid grid-cols-6 items-center">
-              <div className="col-span-2 font-semibold">Note title</div>
-              <div className="col-span-4">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="rounded p-5"
-                          placeholder="Please enter note title"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="grid grid-cols-6 items-start">
-              <div className="col-span-2 font-semibold">Field note</div>
-              <div className="col-span-4">
-                <BlockEditor
-                  initialContent={content}
-                  onChange={(val) => setContent(val)}
-                />
-              </div>
-            </div>
+            <FormGridRow label="Note title">
+              <TextInputField
+                control={form.control}
+                name="title"
+                className="p-5"
+                placeholder="Please enter note title"
+              />
+            </FormGridRow>
+            <FormGridRow label="Field note" align="start">
+              <BlockEditor
+                initialContent={content}
+                onChange={(val) => setContent(val)}
+              />
+            </FormGridRow>
 
             <button
               type="submit"

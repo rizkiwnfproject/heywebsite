@@ -23,5 +23,11 @@ export default function InvitePage() {
     joinSpace();
   }, [params.token, router]);
 
-  return <p className="p-5">Processing your invitation, please wait</p>;
+  return (
+    <>
+      <div className="h-screen w-[90%] flex items-center justify-center ">
+        <p className="p-5 font-semibold text-2xl">Processing your invitation, please wait</p>
+      </div>
+    </>
+  );
 }

@@ -1,10 +1,11 @@
-"use client";
-
 import "../globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Sidebar from "@/components/layout/sidebar";
-import { useState } from "react";
-import ListChatPage from "./space/page";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Hey Binder",
+};
 
 export default function Layout({
   children,

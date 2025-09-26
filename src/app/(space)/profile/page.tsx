@@ -6,13 +6,10 @@ import { supabaseGetFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
 
 const ProfilePage = () => {
-  const router = useRouter();
-
   const {
     data: profile,
     error,

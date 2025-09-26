@@ -1,23 +1,16 @@
 "use client";
 
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { createNoteSchema } from "@/lib/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import z from "zod";
 import BlockEditor from "@/components/layout/blockEditor";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
+import Link from "next/link";
 
 export default function SpaceNotePage() {
   const router = useRouter();
-  const params = useParams<{ id: string, noteId:string }>(); 
+  const params = useParams<{ id: string; noteId: string }>();
   const id = params.id;
   const noteId = params.noteId;
 
@@ -25,11 +18,12 @@ export default function SpaceNotePage() {
     data: note,
     isLoading,
     error,
-  } = useSWR(`/api/space/${id}/note/${noteId}/read`, fetcher, { refreshInterval: 2000 });
+  } = useSWR(`/api/space/${id}/note/${noteId}/read`, fetcher, {
+    refreshInterval: 2000,
+  });
 
   if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="p-5 text-red-500">Error loading note</p>;
-
+  if (error) return <p className="">Please.. refresh this page</p>;
 
   return (
     <div className="max-h-screen h-screen w-full flex flex-col">
@@ -47,14 +41,9 @@ export default function SpaceNotePage() {
             <h1 className="text-xl font-bold">{note.title}</h1>
             {note.role === "ADMIN" && (
               <div className="flex gap-3">
-                <Button
-                  className="rounded"
-                  onClick={() =>
-                    router.push(`/space/${id}/note/${noteId}/edit`)
-                  }
-                >
-                  Edit
-                </Button>
+                <Link href={`/space/${id}/note/${noteId}/edit`}>
+                  <Button className="rounded">Edit</Button>
+                </Link>
                 <Button disabled variant={"destructive"} className="rounded">
                   Delete
                 </Button>

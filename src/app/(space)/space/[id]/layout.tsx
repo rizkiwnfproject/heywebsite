@@ -1,8 +1,14 @@
-"use client";
 
 import "../../../globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import ListSpacePage from "../page";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Hey Binder",
+};
+
+
 export default function Layout({
   children,
 }: Readonly<{

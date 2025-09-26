@@ -1,14 +1,9 @@
 "use client";
 
 import HeaderMessage from "@/components/layout/headerMessage";
+import TextInputField from "@/components/layout/textInputField";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { createMessageSchema } from "@/lib/schema";
 import { supabaseGetFile } from "@/lib/supabase";
@@ -82,7 +77,7 @@ export default function SpaceMessagePage() {
   }, [messages]);
 
   if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="p-5 text-red-500">Error loading message</p>;
+  if (error) return <p className="p-5">Please.. refresh this page</p>;
 
   return (
     <>
@@ -148,20 +143,12 @@ export default function SpaceMessagePage() {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="">
               <div className="relative">
-                <FormField
+                <TextInputField
                   control={form.control}
                   name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Textarea
-                          className="bg-white rounded-none focus-visible:ring-0 focus-visible:border-t border-0 border-t resize-none pr-30"
-                          placeholder="Tulis Pesan"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
+                  input={false}
+                  className="bg-white rounded-none focus-visible:ring-0 focus-visible:border-t border-0 border-t resize-none pr-30"
+                  placeholder="Type something"
                 />
                 <Button className="absolute -translate-y-1/2 top-1/2 right-5  p-2 rounded">
                   <SendHorizontal />

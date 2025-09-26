@@ -47,7 +47,6 @@ model User {
   Session     Session[]
   SpaceMember SpaceMember[]
   Message     Message[]
-  Reaction    Reaction[]
   Note        Note[]
   Space       Space[]
 }
@@ -111,20 +110,6 @@ model Message {
   reply_to  String?  @db.Uuid
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Reaction Reaction[]
-}
-
-model Reaction {
-  id        String   @id @default(cuid())
-  userId    String
-  User      User     @relation(fields: [userId], references: [id])
-  messageId String
-  Message   Message  @relation(fields: [messageId], references: [id])
-  reaction  String?
-  createdAt DateTime @default(now())
-
-  @@unique([userId, messageId, reaction])
 }
 
 model Note {
