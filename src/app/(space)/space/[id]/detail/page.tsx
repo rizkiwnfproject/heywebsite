@@ -34,12 +34,30 @@ const SpaceDetailPage = () => {
     error,
     isLoading,
     mutate,
-  } = useSWR<SpaceProps>(`/api/space/${id}/detail/read`, fetcher, {refreshInterval: 2000});
+  } = useSWR<SpaceProps>(`/api/space/${id}/detail/read`, fetcher, {
+    refreshInterval: 2000,
+  });
 
   console.log(space);
 
-  if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="">Please.. refresh this page</p>;
+  if (isLoading)
+    return (
+      <>
+        <div className="h-screen w-full flex justify-center items-center">
+          <p className="p-5 text-xl font-semibold">Loading...</p>
+        </div>
+      </>
+    );
+  if (error)
+    return (
+      <>
+        <div className="h-screen w-full flex justify-center items-center">
+          <p className="p-5 text-xl font-semibold">
+            Please.. refresh this page
+          </p>
+        </div>
+      </>
+    );
   if (!space) return <p className="p-5">Data not found</p>;
 
   const handleInviteSpace = async () => {

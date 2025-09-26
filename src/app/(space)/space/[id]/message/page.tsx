@@ -76,9 +76,22 @@ export default function SpaceMessagePage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="p-5">Please.. refresh this page</p>;
-
+  if (isLoading) return (
+    <>
+    <div className="h-screen w-full flex justify-center items-center">
+      <p className="p-5 text-xl font-semibold">Loading...</p>
+    </div>
+    </>
+  );if (error)
+    return (
+      <>
+        <div className="h-screen w-full flex justify-center items-center">
+          <p className="p-5 text-xl font-semibold">
+            Please.. refresh this page
+          </p>
+        </div>
+      </>
+    );
   return (
     <>
       <div className="max-h-screen h-screen w-full flex flex-col justify-between">

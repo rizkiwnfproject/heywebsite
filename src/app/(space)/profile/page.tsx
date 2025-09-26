@@ -49,7 +49,7 @@ const ProfilePage = () => {
   return (
     <>
       <div className="h-screen flex flex-col justify-center items-center">
-        <div className="p-10 h-[500px] w-[500px] border border-mutate rounded space-y-2">
+        <div className="p-10  w-[500px] border border-mutate rounded space-y-2">
           <div className="w-full flex items-center justify-center mb-5">
             <div className="w-36 h-36 rounded-full bg-slate-700 flex text-white items-center justify-center text-5xl">
               {photoUrl ? (

@@ -28,8 +28,24 @@ const ListSpacePage = () => {
     mutate,
   } = useSWR<Space[]>("/api/space/read", fetcher);
 
-  if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="p-5">Please.. refresh this page</p>
+  if (isLoading)
+    return (
+      <>
+        <div className="h-screen w-full flex justify-center items-center">
+          <p className="p-5 text-xl font-semibold">Loading...</p>
+        </div>
+      </>
+    );
+  if (error)
+    return (
+      <>
+        <div className="h-screen w-full flex justify-center items-center">
+          <p className="p-5 text-xl font-semibold">
+            Please.. refresh this page
+          </p>
+        </div>
+      </>
+    );
 
   return (
     <>
@@ -73,7 +89,7 @@ const ListSpacePage = () => {
                             width={50}
                             height={40}
                             className="rounded-full object-cover w-13 h-12 "
-                            unoptimized 
+                            unoptimized
                           />
                         ) : (
                           <div className="w-13 h-12 bg-slate-700 rounded-full flex items-center justify-center text-white">
@@ -86,7 +102,7 @@ const ListSpacePage = () => {
                             <p className="text-xs text-slate-400">{lastDate}</p>
                           </div>
                           <p className="text-xs text-slate-600">
-                            {lastMessage.slice(0,50)}...
+                            {lastMessage.slice(0, 50)}...
                           </p>
                         </div>
                       </div>
