@@ -1,4 +1,4 @@
-h"use client";
+"use client";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
     <div className="max-h-screen h-screen w-full flex flex-col">
       <div
         onClick={() => router.push(`/space/${params.id}/message`)}
-        className="h-15 bg-primary flex items-center px-5 text-white cursor-pointer"
+        className="h-15 bg-slate-900 flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />
         <p>Kembali</p>

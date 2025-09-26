@@ -77,7 +77,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
       {/* header */}
       <div
         onClick={() => router.push(`/space/${params.id}/message`)}
-        className="h-15 bg-primary flex items-center px-5 text-white cursor-pointer"
+        className="h-15 bg-slate-900 flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />
         <p>Kembali</p>

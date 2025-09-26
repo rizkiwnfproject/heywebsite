@@ -109,7 +109,7 @@ export default function SpaceEditPage({ params }: SpaceEditProps) {
     <div className="max-h-screen h-screen w-full flex flex-col">
       <div
         onClick={() => router.push(`/space/${id}/message`)}
-        className="h-15 bg-primary flex items-center px-5 text-white cursor-pointer"
+        className="h-15 bg-slate-900 flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />
         <p>Kembali</p>

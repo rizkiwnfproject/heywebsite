@@ -10,12 +10,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { createMessageSchema } from "@/lib/schema";
+import { supabaseGetFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EllipsisVertical, Paperclip, SendHorizontal } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -34,7 +36,7 @@ interface messageProps {
   message: string;
   photo?: string | null;
   createdAt: string;
-  User: { id: string; name: string; avatar?: string | null };
+  User: { id: string; name: string; photo?: string | null };
   Space: { id: string; name: string };
 }
 
@@ -80,6 +82,12 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
     }
   };
 
+  const bottomRef = React.useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   if (isLoading) return <p className="p-5">Loading...</p>;
   if (error) return <p className="p-5 text-red-500">Error load pesan</p>;
 
@@ -90,7 +98,7 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
         <HeaderMessage
           name={space?.name ?? "Loading..."}
           nameNote="Lesson"
-          id={id}
+          spaceId={id}
         />
         {/* chat */}
         <div className="flex-1 p-5 space-y-2 overflow-y-auto">
@@ -102,13 +110,13 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
               }`}
             >
               {msg.User.id !== currentUserId &&
-                (msg.User.avatar ? (
+                (msg.User.photo ? (
                   <Image
-                    src={msg.User.avatar}
+                    src={supabaseGetFile(msg.User.photo, "user")}
                     alt=""
                     width={40}
                     height={40}
-                    className="rounded-full"
+                    className="w-10 h-10 mr-2 rounded-full object-cover"
                   />
                 ) : (
                   <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center text-white mr-2">
@@ -143,19 +151,20 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
               </div>
             </div>
           ))}
+          <div ref={bottomRef} />
         </div>
         <div className="">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="">
-              <div className="relative h-16">
+              <div className="relative">
                 <FormField
                   control={form.control}
                   name="message"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
-                          className="bg-white h-16 rounded-none focus-visible:border-0 focus-visible:border-t focus-visible:ring-0 border-0 border-t"
+                        <Textarea
+                          className="bg-white rounded-none focus-visible:ring-0 focus-visible:border-t border-0 border-t resize-none pr-30"
                           placeholder="Tulis Pesan"
                           {...field}
                         />

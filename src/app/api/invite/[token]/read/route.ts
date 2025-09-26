@@ -29,7 +29,6 @@ export async function GET(
     return NextResponse.json({ error: "Invite expired" }, { status: 400 });
   }
 
-  // cek apakah user sudah member
   const existingMember = await prisma.spaceMember.findUnique({
     where: { spaceId_userId: { spaceId: invite.spaceId, userId: payload.id } },
   });
@@ -38,7 +37,6 @@ export async function GET(
     return NextResponse.json({ redirect: `/${invite.spaceId}/message` });
   }
 
-  // tentukan status berdasarkan permission
   const status = invite.Space.permission ? "PENDING" : "ACCEPTED";
 
   await prisma.spaceMember.create({
@@ -54,6 +52,6 @@ export async function GET(
       status === "PENDING"
         ? "Request bergabung terkirim, menunggu persetujuan admin."
         : "Berhasil bergabung ke space.",
-    redirect: status === "PENDING" ? "/" : `/${invite.spaceId}/message`,
+    redirect: status === "PENDING" ? "/" : `/space/${invite.spaceId}/message`,
   });
 }

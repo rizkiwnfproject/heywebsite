@@ -1,9 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { loginSchema, registerSchema } from "@/lib/schema";
+import { loginSchema } from "@/lib/schema";
 import React from "react";
-import { useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -17,8 +16,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const SignIn = () => {
   const router = useRouter();
@@ -29,12 +28,20 @@ const SignIn = () => {
 
   const onSubmit = async (val: z.infer<typeof loginSchema>) => {
     try {
-      fetch("/api/sign-in", {
+      const res = await fetch("/api/sign-in", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(val),
-        credentials: "include", 
+        credentials: "include",
       });
+
+      if (!res.ok) {
+        toast("Failed to login", {
+          description: "Username or email wrong, please check again", className: 'text-slate-900'
+        });
+        throw new Error("Login gagal");
+      }
+
       router.push("/");
     } catch (error) {
       console.log(error);
@@ -57,7 +64,7 @@ const SignIn = () => {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukkan usernamemu" {...field} />
+                  <Input placeholder="Please enter your username" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -65,12 +72,33 @@ const SignIn = () => {
           />
           <FormField
             control={form.control}
-            name="number_phone"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nomor Telepon</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukkan nomor teleponmu" {...field} />
+                  <Input
+                    type="email"
+                    placeholder="Please enter your email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Please enter your password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

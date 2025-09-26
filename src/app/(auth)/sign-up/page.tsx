@@ -61,7 +61,7 @@ const SignUp = () => {
               <FormItem>
                 <FormLabel>Nama</FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukkan namamu" {...field} />
+                  <Input placeholder="Please enter your name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -74,7 +74,7 @@ const SignUp = () => {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukkan usernamemu" {...field} />
+                  <Input placeholder="Please enter your username" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,7 +87,7 @@ const SignUp = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukkan emailmu" {...field} />
+                  <Input placeholder="Please enter your email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,7 +100,20 @@ const SignUp = () => {
               <FormItem>
                 <FormLabel>Nomor Telepon</FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukkan nomor teleponmu" {...field} />
+                  <Input placeholder="Please enter your phone number" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="Please enter your password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

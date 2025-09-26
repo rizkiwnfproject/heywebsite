@@ -12,7 +12,11 @@ export const registerSchema = z.object({
     .email({ message: "email tidak valid" }),
   number_phone: z
     .string({ message: "Nomor HP pengguna harus diisi" })
-    .min(8, { message: "Nomor HP pengguna minimal 8 karakter" }),
+    .min(8, { message: "Nomor HP pengguna minimal 8 karakter" })
+    .regex(/^[0-9]+$/, { message: "Nomor HP hanya boleh berisi angka" }),
+  password: z
+    .string({ message: "Password pengguna harus diisi" })
+    .min(5, { message: "Password pengguna minimal 8 karakter" }),
 });
 
 export const updateProfileSchema = z.object({
@@ -27,10 +31,10 @@ export const updateProfileSchema = z.object({
     .email({ message: "email tidak valid" }),
   number_phone: z
     .string({ message: "Nomor HP pengguna harus diisi" })
-    .min(8, { message: "Nomor HP pengguna minimal 8 karakter" }),
+    .min(8, { message: "Nomor HP pengguna minimal 8 karakter" })
+    .regex(/^[0-9]+$/, { message: "Nomor HP hanya boleh berisi angka" }),
   photo: z.any().optional(),
 });
-
 
 export const updateProfileApiSchema = z.object({
   name: z
@@ -44,7 +48,8 @@ export const updateProfileApiSchema = z.object({
     .email({ message: "email tidak valid" }),
   number_phone: z
     .string({ message: "Nomor HP pengguna harus diisi" })
-    .min(8, { message: "Nomor HP pengguna minimal 8 karakter" }),
+    .min(8, { message: "Nomor HP pengguna minimal 8 karakter" })
+    .regex(/^[0-9]+$/, { message: "Nomor HP hanya boleh berisi angka" }),
   photo: z.string().optional().nullable(),
 });
 
@@ -52,9 +57,12 @@ export const loginSchema = z.object({
   username: z
     .string({ message: "Username pengguna harus diisi" })
     .min(5, { message: "Username pengguna minimal 4 karakter" }),
-  number_phone: z
-    .string({ message: "Nomor HP pengguna harus diisi" })
-    .min(8, { message: "Nomor HP pengguna minimal 8 karakter" }),
+  email: z
+    .string({ message: "Email pengguna harus diisi" })
+    .email({ message: "email tidak valid" }),
+  password: z
+    .string({ message: "Password pengguna harus diisi" })
+    .min(5, { message: "Password pengguna minimal 8 karakter" }),
 });
 
 export const createSpaceSchema = z.object({

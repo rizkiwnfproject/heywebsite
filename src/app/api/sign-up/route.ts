@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    if (!body.email || !body.number_phone || !body.username || !body.name) {
+    if (!body.email || !body.number_phone || !body.username || !body.name || !body.password) {
       return NextResponse.json(
         { message: "Data tidak lengkap" },
         { status: 400 }
@@ -25,8 +26,14 @@ export async function POST(req: Request) {
       );
     }
 
+        const hashedPassword = await bcrypt.hash(body.password, 10);
+
+
     const result = await prisma.user.create({
-      data: body,
+      data: {
+        ...body,
+        password: hashedPassword
+      },
     });
 
     return NextResponse.json(result, {status: 201})

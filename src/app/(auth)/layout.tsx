@@ -16,17 +16,19 @@ export default function Layout({
     <>
       <main className="bg-white">
         <div className=" max-w-9/12 w-full h-screen mx-auto flex justify-center items-center">
-          <div className="w-full grid grid-cols-1 md:grid-cols-5">
+          {/* <div className="w-full grid grid-cols-1 md:grid-cols-5">
             <Image
-              src={"/images/sign/sign.jpg"}
+              src={"/assets/images/sign/sign.jpg"}
               alt="auth picture"
-              width="600"
-              height="600"
+              width={600}
+              height={600}
               className="hidden md:flex col-span-3 justify-center items-center"
+              unoptimized 
             />
-            <div className="col-span-2 h-full flex justify-center items-center">
-              {children}
-            </div>
+            
+          </div> */}
+          <div className="h-full w-[50%] flex justify-center items-center">
+            {children}
           </div>
         </div>
       </main>

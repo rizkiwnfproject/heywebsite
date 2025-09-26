@@ -85,13 +85,13 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
   };
 
   const avatarUrl = space.avatar
-    ? supabaseGetFile(space.avatar, "space") // kategori sesuai folder storage
+    ? supabaseGetFile(space.avatar, "space")
     : null;
 
   return (
     <>
       <div className="max-h-screen h-screen w-full">
-        <div className="h-15 bg-primary px-5 flex items-center justify-between">
+        <div className="h-15 bg-slate-900 px-5 flex items-center justify-between">
           <div
             onClick={() => router.push(`/space/${params.id}/message`)}
             className="flex items-center  text-white cursor-pointer"
@@ -122,7 +122,7 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
         <div className="p-10 space-y-4 ">
           <div className="grid lg:grid-cols-3 gap-3">
             <div className="lg:col-span-2 space-y-4">
-              <div className="p-5 border border-border space-y-3 rounded-lg max-h-[180px]">
+              <div className="p-5 border border-border space-y-3 rounded-lg ">
                 <p className="text-2xl font-semibold">{space.name}</p>
                 <p className="text-slate-400">
                   Dibuat oleh :{" "}

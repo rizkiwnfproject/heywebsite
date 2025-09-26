@@ -7,11 +7,12 @@ import { Button } from "../ui/button";
 import AddNoteModal from "./addNote";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
+import { getCurrentUser } from "@/lib/auth";
 
 interface HeaderMessageProps {
   name: string;
   nameNote: string;
-  id: string;
+  spaceId: string;
 }
 
 interface Note {
@@ -22,12 +23,19 @@ interface Note {
 const HeaderMessage: FC<HeaderMessageProps> = ({
   name = "nama space",
   nameNote = "Lesson",
-  id,
+  spaceId,
 }) => {
   const router = useRouter();
 
+  const { data: space, mutate } = useSWR(
+    `/api/space/${spaceId}/detail/read`,
+    fetcher
+  );
+
+  console.log(space);
+
   const { data, error, isLoading } = useSWR<{ notes: Note[] }>(
-    `/api/space/${id}/note/read`,
+    `/api/space/${spaceId}/note/read`,
     fetcher,
     { refreshInterval: 2000 }
   );
@@ -44,23 +52,25 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
           <p className="font-semibold text-xl text-white">{name}</p>
           {/* <EllipsisVertical /> */}
           <div className="flex gap-2">
-            <Button onClick={() => router.push(`/space/${id}/detail`)} >
+            <Button onClick={() => router.push(`/space/${spaceId}/detail`)}>
               <Info />
               Detail
             </Button>
           </div>
         </div>
-        <div className="bg-slate-100 flex items-center px-5 py-3 space-x-2">
-          <AddNoteModal id={id} />
-          {notes.map((note) => (
+        <div className="bg-slate-100 flex items-center px-5 py-3 space-x-2 border-b border-b-slate-300">
+          {space?.role === "ADMIN" && <AddNoteModal id={spaceId} />}
+          {notes.length > 0 ? notes.map((note) => (
             <Button
               key={note.id}
-              onClick={() => router.push(`/space/${id}/note/${note.id}`)}
+              onClick={() => router.push(`/space/${spaceId}/note/${note.id}`)}
               className="flex items-center gap-2 px-3 py-1  rounded"
             >
               <p>{note.title} </p>
             </Button>
-          ))}
+          )): (
+            <Button variant={"outline"}>Belum Ada Note</Button>
+          )}
         </div>
       </div>
     </>

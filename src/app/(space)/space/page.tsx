@@ -86,7 +86,7 @@ const ListSpacePage = () => {
                             <p className="text-xs text-slate-400">{lastDate}</p>
                           </div>
                           <p className="text-xs text-slate-600">
-                            {lastMessage}
+                            {lastMessage.slice(0,50)}...
                           </p>
                         </div>
                       </div>

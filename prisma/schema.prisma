@@ -38,6 +38,7 @@ model User {
   email              String    @unique
   number_phone       String
   photo              String?
+  password           String
   lastUsernameChange DateTime?
 
   createdAt DateTime @default(now())
