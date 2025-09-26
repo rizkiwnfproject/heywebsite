@@ -1,16 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
 
-interface InvitePageProps {
-  params: {
-    token: string;
-  };
-}
-
-export default function InvitePage({ params }: InvitePageProps) {
+export default function InvitePage() {
   const router = useRouter();
+  const params = useParams<{ token: string }>();
 
   useEffect(() => {
     const joinSpace = async () => {
