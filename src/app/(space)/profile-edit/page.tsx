@@ -13,11 +13,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { updateProfileSchema } from "@/lib/schema";
+import {
+  supabaseDeleteFile,
+  supabaseGetFile,
+  supabaseUploadFile,
+} from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import z from "zod";
@@ -25,6 +31,9 @@ import z from "zod";
 export default function ProfileEditPage() {
   const router = useRouter();
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<z.infer<typeof updateProfileSchema>>({
     resolver: zodResolver(updateProfileSchema),
@@ -53,12 +62,37 @@ export default function ProfileEditPage() {
     }
   }, [profile]);
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
   const onSubmit = async (val: z.infer<typeof updateProfileSchema>) => {
     try {
+      let photoFilename = profile.photo;
+
+      if (val.photo instanceof FileList && val.photo.length > 0) {
+        const file = val.photo[0];
+        const { error, filename } = await supabaseUploadFile(file, "user");
+        if (error) throw error;
+        console.log(profile.photo);
+
+        if (profile.photo) {
+          await supabaseDeleteFile(profile.photo, "user");
+        }
+
+        photoFilename = filename;
+      }
+
       const res = await fetch("/api/me/update", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(val),
+        body: JSON.stringify({
+          ...val,
+          photo: photoFilename as string,
+        }),
       });
       if (!res.ok) throw new Error("Failed to update profile");
       const updated = await res.json();
@@ -69,17 +103,66 @@ export default function ProfileEditPage() {
     }
   };
 
+  const photoUrl = profile?.photo
+    ? supabaseGetFile(profile.photo, "user")
+    : null;
+
   return (
     <>
       <div className="h-screen flex flex-col justify-center items-center">
         <div className="p-10 w-[700px] border border-mutate rounded space-y-2">
-          <div className="w-full flex items-center justify-center mb-5">
-            <div className="w-36 h-36 rounded-full bg-slate-700 flex text-white items-center justify-center text-5xl">
-              {profile.name.charAt(0)}
-            </div>
-          </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="w-full flex items-center justify-center mb-5">
+                <div className="w-full space-y-4 flex flex-col items-center justify-center">
+                  <div
+                    className="w-36 h-36 rounded-full bg-slate-700 flex text-white items-center justify-center text-5xl cursor-pointer overflow-hidden"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    {preview ? (
+                      <Image
+                        src={preview}
+                        alt="Preview"
+                        width={144}
+                        height={144}
+                        className="object-cover w-36 h-36 rounded-full"
+                      />
+                    ) : photoUrl ? (
+                      <Image
+                        src={photoUrl}
+                        alt="Preview"
+                        width={144}
+                        height={144}
+                        className="object-cover w-36 h-36 rounded-full"
+                      />
+                    ) : (
+                      <span>+</span>
+                    )}
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="photo"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            className=""
+                            onChange={(e) => {
+                              const files = e.target.files;
+                              if (files && files[0]) {
+                                field.onChange(files); // 👈 kirim FileList ke react-hook-form
+                                setPreview(URL.createObjectURL(files[0]));
+                              }
+                            }}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
               <FormField
                 control={form.control}
                 name="username"

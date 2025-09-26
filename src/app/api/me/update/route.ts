@@ -2,7 +2,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { verifyJwt } from "@/lib/token";
-import { updateProfileSchema } from "@/lib/schema";
+import { updateProfileApiSchema } from "@/lib/schema";
 import prisma from "../../../../../lib/prisma";
 
 export async function PUT(req: Request) {
@@ -32,15 +32,28 @@ export async function PUT(req: Request) {
       );
     }
 
-    const parsed = updateProfileSchema.parse(body);
+    console.log("updateProfileApiSchema", updateProfileApiSchema);
+
+    const parsed = updateProfileApiSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          error: "Invalid data",
+          details: parsed.error.issues.map((errors) => errors.message),
+        },
+        { status: 400 }
+      );
+    }
 
     const updated = await prisma.user.update({
       where: { id: payload.id },
       data: {
-        username: parsed.username,
-        name: parsed.name,
-        email: parsed.email,
+        username: parsed.data.username,
+        name: parsed.data.name,
+        email: parsed.data.email,
         lastUsernameChange: new Date(Date.now()),
+        photo: parsed.data.photo ?? undefined,
         // nomor HP tidak bisa diubah
       },
       select: {

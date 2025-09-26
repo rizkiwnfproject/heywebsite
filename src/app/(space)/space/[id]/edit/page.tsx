@@ -64,12 +64,13 @@ export default function SpaceEditPage({ params }: SpaceEditProps) {
 
   const onSubmit = async (val: z.infer<typeof updateSpaceSchema>) => {
     try {
-      let avatarFilename = space.avatar; // default avatar lama
+      let avatarFilename = space.avatar;
 
       if (val.avatar && val.avatar.length > 0) {
-        const file = val.avatar[0]; // 👈 sudah pasti File
+        const file = val.avatar[0];
         const { error, filename } = await supabaseUploadFile(file, "space");
         if (error) throw error;
+        console.log(space.avatar);
 
         if (space.avatar) {
           await supabaseDeleteFile(space.avatar, "space");
@@ -95,7 +96,7 @@ export default function SpaceEditPage({ params }: SpaceEditProps) {
         return;
       }
 
-      router.push(`/space/${id}/message`);
+      router.push(`/space/${id}/detail`);
       router.refresh();
     } catch (error) {
       console.error(error);

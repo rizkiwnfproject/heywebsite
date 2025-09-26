@@ -2,7 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { supabaseGetFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -42,13 +44,28 @@ const ProfilePage = () => {
     );
   }
 
+  const photoUrl = profile.photo
+    ? supabaseGetFile(profile.photo, "user")
+    : null;
+
+
   return (
     <>
       <div className="h-screen flex flex-col justify-center items-center">
         <div className="p-10 h-[500px] w-[500px] border border-mutate rounded space-y-2">
           <div className="w-full flex items-center justify-center mb-5">
             <div className="w-36 h-36 rounded-full bg-slate-700 flex text-white items-center justify-center text-5xl">
-              {profile.name.charAt(0)}
+              {photoUrl ? (
+                <Image
+                  src={photoUrl}
+                  alt={profile.name}
+                  width={160}
+                  height={160}
+                  className="object-cover w-40 h-40 rounded-full"
+                />
+              ) : (
+                <span>{profile.name.charAt(0)}</span>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 space-y-3 ">

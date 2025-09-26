@@ -28,6 +28,24 @@ export const updateProfileSchema = z.object({
   number_phone: z
     .string({ message: "Nomor HP pengguna harus diisi" })
     .min(8, { message: "Nomor HP pengguna minimal 8 karakter" }),
+  photo: z.any().optional(),
+});
+
+
+export const updateProfileApiSchema = z.object({
+  name: z
+    .string({ message: "Nama pengguna harus diisi" })
+    .min(4, { message: "Nama pengguna minimal 4 karakter" }),
+  username: z
+    .string({ message: "Username pengguna harus diisi" })
+    .min(5, { message: "Username pengguna minimal 4 karakter" }),
+  email: z
+    .string({ message: "Email pengguna harus diisi" })
+    .email({ message: "email tidak valid" }),
+  number_phone: z
+    .string({ message: "Nomor HP pengguna harus diisi" })
+    .min(8, { message: "Nomor HP pengguna minimal 8 karakter" }),
+  photo: z.string().optional().nullable(),
 });
 
 export const loginSchema = z.object({
@@ -60,7 +78,7 @@ export const updateSpaceApiSchema = z.object({
   name: z.string(),
   description: z.string().optional().nullable(),
   permission: z.boolean().optional(),
-  avatar: z.string().optional().nullable(), 
+  avatar: z.string().optional().nullable(),
 });
 
 export const createMessageSchema = z.object({
