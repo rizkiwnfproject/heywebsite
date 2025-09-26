@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "../../../../../../../lib/prisma";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/token";
-import { updateSpaceSchema } from "@/lib/schema";
+import { updateSpaceApiSchema, updateSpaceSchema } from "@/lib/schema";
 
 export async function PATCH(
   req: Request,
@@ -18,7 +18,7 @@ export async function PATCH(
     }
 
     const body = await req.json();
-    const parsed = updateSpaceSchema.safeParse(body);
+    const parsed = updateSpaceApiSchema.safeParse(body);
 
     if (!parsed.success) {
       return NextResponse.json(
@@ -36,6 +36,7 @@ export async function PATCH(
         name: parsed.data.name,
         description: parsed.data.description,
         permission: parsed.data.permission,
+        avatar: parsed.data.avatar ?? undefined,
       },
     });
 

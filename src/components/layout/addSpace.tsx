@@ -1,4 +1,4 @@
-import { MessageCirclePlus } from "lucide-react";
+import { MessageCirclePlus, Plus } from "lucide-react";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -57,8 +57,9 @@ const AddSpaceModal = ({ onSuccess }: { onSuccess?: () => void }) => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">
-            <MessageCirclePlus />
+          <Button>
+            <Plus />
+            Add Space
           </Button>
         </DialogTrigger>
 

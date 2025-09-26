@@ -15,7 +15,7 @@ export default function InvitePage({ params }: { params: { token: string } }) {
         router.push(data.redirect);
       } else {
         alert(data.error || "Invite tidak valid");
-        router.push("/");
+        router.push("/space");
       }
     };
 

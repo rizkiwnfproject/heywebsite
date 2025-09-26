@@ -19,7 +19,11 @@ export async function GET() {
       where: { id: payload.id },
     });
 
-    return NextResponse.json(user);
+    const totalSpaces = await prisma.spaceMember.count({
+      where: { userId: payload.id },
+    });
+
+    return NextResponse.json({...user, totalSpaces});
   } catch (error) {
     console.error("Profile GET error:", error);
     return NextResponse.json(

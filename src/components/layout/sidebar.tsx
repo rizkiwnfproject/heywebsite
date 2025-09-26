@@ -23,11 +23,8 @@ const Sidebar = () => {
   return (
     <>
       <div className="w-[10%] h-screen bg-slate-900 pt-12 px-2 space-y-6 ">
-        <div
-          onClick={() => router.push("/space")}
-          className="flex flex-col items-center space-y-6 text-white"
-        >
-          <Button variant={"ghost"}>
+        <div className="flex flex-col items-center space-y-6 text-white">
+          <Button variant={"ghost"} onClick={() => router.push("/space")}>
             <div className="flex items-center gap-2">
               <MessageCircleMore />
               Spaces
@@ -36,7 +33,7 @@ const Sidebar = () => {
         </div>
         <div className="space-y-6">
           <div className="text-white w-full flex justify-center items-center ">
-            <Button variant={"ghost"}>
+            <Button variant={"ghost"} onClick={() => router.push("/profile")}>
               <div className="flex items-center gap-2">
                 <User />
                 Profile

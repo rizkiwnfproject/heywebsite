@@ -60,8 +60,8 @@ const AddNoteModal: FC<AddNoteModalProps> = ({ id }) => {
           <Button variant={"outline"}
             className="flex items-center gap-2 px-3 py-1"
           >
-            <p>add </p>
             <Plus className="w-4" />
+            <p>Add Note </p>
           </Button>
         </DialogTrigger>
 

@@ -74,7 +74,9 @@ export default function ProfileEditPage() {
       <div className="h-screen flex flex-col justify-center items-center">
         <div className="p-10 w-[700px] border border-mutate rounded space-y-2">
           <div className="w-full flex items-center justify-center mb-5">
-            <div className="w-36 h-36 rounded-full bg-slate-700 flex" />
+            <div className="w-36 h-36 rounded-full bg-slate-700 flex text-white items-center justify-center text-5xl">
+              {profile.name.charAt(0)}
+            </div>
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

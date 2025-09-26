@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { updateSpaceSchema } from "@/lib/schema";
+import { supabaseDeleteFile, supabaseUploadFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import z from "zod";
@@ -24,9 +26,13 @@ interface SpaceEditProps {
 
 export default function SpaceEditPage({ params }: SpaceEditProps) {
   const router = useRouter();
+  const { id } = useParams<{ id: string }>(); // ✅ ambil params di client
+
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { data: space, isLoading } = useSWR(
-    `/api/space/${params.id}/detail/read`,
+    `/api/space/${id}/detail/read`,
     fetcher
   );
 
@@ -49,19 +55,47 @@ export default function SpaceEditPage({ params }: SpaceEditProps) {
     }
   }, [space, form]);
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
   const onSubmit = async (val: z.infer<typeof updateSpaceSchema>) => {
     try {
-      const res = await fetch(`/api/space/${params.id}/detail/update`, {
+      let avatarFilename = space.avatar; // default avatar lama
+
+      if (val.avatar && val.avatar.length > 0) {
+        const file = val.avatar[0]; // 👈 sudah pasti File
+        const { error, filename } = await supabaseUploadFile(file, "space");
+        if (error) throw error;
+
+        if (space.avatar) {
+          await supabaseDeleteFile(space.avatar, "space");
+        }
+
+        avatarFilename = filename;
+      }
+
+      const res = await fetch(`/api/space/${id}/detail/update`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(val),
+        body: JSON.stringify({
+          name: val.name,
+          description: val.description,
+          permission: val.permission,
+          avatar: avatarFilename as string,
+        }),
       });
 
       if (!res.ok) {
         const err = await res.json();
+        console.error("Update error:", err);
         return;
       }
-      router.push(`/${params.id}/message`);
+
+      router.push(`/space/${id}/message`);
       router.refresh();
     } catch (error) {
       console.error(error);
@@ -73,7 +107,7 @@ export default function SpaceEditPage({ params }: SpaceEditProps) {
   return (
     <div className="max-h-screen h-screen w-full flex flex-col">
       <div
-        onClick={() => router.push(`/${params.id}/message`)}
+        onClick={() => router.push(`/space/${id}/message`)}
         className="h-15 bg-primary flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />
@@ -83,6 +117,48 @@ export default function SpaceEditPage({ params }: SpaceEditProps) {
       <div className="p-10 h-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
+            <div className="grid grid-cols-6 items-start">
+              <div className="col-span-2 font-semibold">Photo</div>
+              <div className="col-span-4 flex items-center gap-4">
+                <div
+                  className="w-36 h-36 rounded-full bg-slate-700 flex text-white items-center justify-center text-5xl cursor-pointer overflow-hidden"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {preview ? (
+                    <Image
+                      src={preview}
+                      alt="Preview"
+                      width={144}
+                      height={144}
+                      className="object-cover w-36 h-36 rounded-full"
+                    />
+                  ) : (
+                    <span>+</span>
+                  )}
+                </div>
+                <FormField
+                  control={form.control}
+                  name="avatar"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const files = e.target.files;
+                            if (files && files[0]) {
+                              field.onChange(files); // 👈 kirim FileList ke react-hook-form
+                              setPreview(URL.createObjectURL(files[0]));
+                            }
+                          }}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
             <div className="grid grid-cols-6 items-center">
               <div className="col-span-2 font-semibold">Nama Space</div>
               <div className="col-span-4">

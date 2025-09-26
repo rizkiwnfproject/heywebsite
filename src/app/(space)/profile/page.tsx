@@ -47,7 +47,9 @@ const ProfilePage = () => {
       <div className="h-screen flex flex-col justify-center items-center">
         <div className="p-10 h-[500px] w-[500px] border border-mutate rounded space-y-2">
           <div className="w-full flex items-center justify-center mb-5">
-            <div className="w-36 h-36 rounded-full bg-slate-700 flex" />
+            <div className="w-36 h-36 rounded-full bg-slate-700 flex text-white items-center justify-center text-5xl">
+              {profile.name.charAt(0)}
+            </div>
           </div>
           <div className="grid grid-cols-2 space-y-3 ">
             <p className="font-semibold">Name</p>
@@ -62,7 +64,7 @@ const ProfilePage = () => {
           <Separator />
           <div className="grid grid-cols-2 ">
             <p className="font-semibold">Total Space</p>
-            <p>: 5</p>
+            <p>: {profile.totalSpaces}</p>
           </div>
           <Separator />
           <Link href="/profile-edit">

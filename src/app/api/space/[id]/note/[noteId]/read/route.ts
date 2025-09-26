@@ -26,7 +26,7 @@ export async function GET(
 
   const spaceMember = await prisma.spaceMember.findFirst({
     where: {
-      spaceId: note.spaceId,
+      // spaceId: note.spaceId,
       userId: payload.id,
     },
   });

@@ -2,6 +2,7 @@
 
 import AddSpaceModal from "@/components/layout/addSpace";
 import { Separator } from "@/components/ui/separator";
+import { supabaseGetFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -57,20 +58,25 @@ const ListSpacePage = () => {
                       month: "short",
                       year: "numeric",
                     });
+                const avatarUrl = space.avatar
+                  ? supabaseGetFile(space.avatar, "space")
+                  : null;
 
                 return (
                   <>
-                    <Link key={space.id} href={`/${space.id}/message`}>
+                    <Link key={space.id} href={`/space/${space.id}/message`}>
                       <div className="flex items-center gap-2 p-2 w-full hover:bg-slate-50 rounded">
-                        {space.avatar ? (
+                        {avatarUrl ? (
                           <Image
-                            src={space.avatar}
-                            alt=""
+                            src={avatarUrl}
+                            alt={space.name}
                             width={50}
-                            height={50}
+                            height={40}
+                            className="rounded-full object-cover w-13 h-12 "
+                            unoptimized 
                           />
                         ) : (
-                          <div className="w-12 h-10 bg-slate-700 rounded-full flex items-center justify-center text-white">
+                          <div className="w-13 h-12 bg-slate-700 rounded-full flex items-center justify-center text-white">
                             {space.name.charAt(0)}
                           </div>
                         )}

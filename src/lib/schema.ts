@@ -28,7 +28,7 @@ export const updateProfileSchema = z.object({
   number_phone: z
     .string({ message: "Nomor HP pengguna harus diisi" })
     .min(8, { message: "Nomor HP pengguna minimal 8 karakter" }),
-})
+});
 
 export const loginSchema = z.object({
   username: z
@@ -54,6 +54,13 @@ export const updateSpaceSchema = z.object({
   description: z.string().optional(),
   permission: z.boolean().optional(),
   avatar: z.any().optional(),
+});
+
+export const updateSpaceApiSchema = z.object({
+  name: z.string(),
+  description: z.string().optional().nullable(),
+  permission: z.boolean().optional(),
+  avatar: z.string().optional().nullable(), 
 });
 
 export const createMessageSchema = z.object({

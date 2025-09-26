@@ -144,11 +144,10 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
             </div>
           ))}
         </div>
-        {/* input */}
         <div className="">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="">
-              <div className="relative">
+              <div className="relative h-16">
                 <FormField
                   control={form.control}
                   name="message"
@@ -156,42 +155,21 @@ export default function SpaceMessagePage({ params }: SpaceMessageProps) {
                     <FormItem>
                       <FormControl>
                         <Input
-                          className="bg-white  h-12 rounded-none focus-visible:border-0 focus-visible:border-t focus-visible:ring-0 border-0 border-t"
+                          className="bg-white h-16 rounded-none focus-visible:border-0 focus-visible:border-t focus-visible:ring-0 border-0 border-t"
                           placeholder="Tulis Pesan"
                           {...field}
                         />
                       </FormControl>
-                      {/* <FormMessage /> */}
                     </FormItem>
                   )}
                 />
-                {/* <FormField
-                  control={form.control}
-                  name="photo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div className="absolute top-1 left-3 hover:bg-primary p-2 rounded hover:text-white flex">
-                          <Paperclip />
-
-                          <Input
-                            type="file"
-                            accept=".jpg,.jpeg,.png"
-                            className="w-10 absolute top-0 left-0 file:text-transparent bg-transparent border-none"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
-                <Button className="absolute top-2 right-3  p-2 rounded">
+                <Button className="absolute -translate-y-1/2 top-1/2 right-5  p-2 rounded">
                   <SendHorizontal />
                 </Button>
               </div>
             </form>
           </Form>
-          <div className="h-2 bg-blue-600"></div>
+          {/* <div className="h-2 bg-slate-900"></div> */}
         </div>
       </div>
     </>

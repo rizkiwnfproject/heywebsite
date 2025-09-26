@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { supabaseGetFile } from "@/lib/supabase";
 import { fetcher } from "@/lib/utils";
 import { Check, ChevronLeft, Link, X } from "lucide-react";
 import Image from "next/image";
@@ -83,12 +84,16 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
     }
   };
 
+  const avatarUrl = space.avatar
+    ? supabaseGetFile(space.avatar, "space") // kategori sesuai folder storage
+    : null;
+
   return (
     <>
       <div className="max-h-screen h-screen w-full">
         <div className="h-15 bg-primary px-5 flex items-center justify-between">
           <div
-            onClick={() => router.push(`/${params.id}/message`)}
+            onClick={() => router.push(`/space/${params.id}/message`)}
             className="flex items-center  text-white cursor-pointer"
           >
             <ChevronLeft />
@@ -101,16 +106,21 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
             </Button>
             {space.role === "ADMIN" && (
               <>
-                <Button onClick={() => router.push(`/${id}/edit`)} className="bg-yellow-400 hover:bg-yellow-500 text-black">
+                <Button
+                  onClick={() => router.push(`/space/${id}/edit`)}
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black"
+                >
                   Edit
                 </Button>
-                <Button disabled variant={"destructive"}>Delete</Button>
+                <Button disabled variant={"destructive"}>
+                  Delete
+                </Button>
               </>
             )}
           </div>
         </div>
         <div className="p-10 space-y-4 ">
-          <div className="grid lg:grid-cols-3">
+          <div className="grid lg:grid-cols-3 gap-3">
             <div className="lg:col-span-2 space-y-4">
               <div className="p-5 border border-border space-y-3 rounded-lg max-h-[180px]">
                 <p className="text-2xl font-semibold">{space.name}</p>
@@ -123,7 +133,7 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
                 <p className="text-justify text-sm">
                   {space.description
                     ? space.description
-                    : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est ducimus, dolores iusto totam earum ut quas, voluptate autem, ex molestiae maxime illo placeat! Cupiditate explicabo libero consectetur! Earum, quo maxime."}
+                    : "The description is empty"}
                 </p>
               </div>
               <div className="p-5 border border-border space-y-3 rounded-lg flex items-center justify-between">
@@ -135,6 +145,21 @@ const SpaceDetailPage = ({ params }: SpaceDetailProps) => {
                 >
                   {space.permission ? "True" : "False"}
                 </p>
+              </div>
+            </div>
+            <div className="border rounded-lg h-full flex flex-col items-center justify-center p-5 space-y-3">
+              <div className="w-40 h-40 bg-slate-700 rounded-full flex items-center justify-center text-5xl text-white overflow-hidden">
+                {avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt={space.name}
+                    width={160}
+                    height={160}
+                    className="object-cover w-40 h-40 rounded-full"
+                  />
+                ) : (
+                  <span>{space.name.charAt(0)}</span>
+                )}
               </div>
             </div>
           </div>

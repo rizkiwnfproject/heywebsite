@@ -1,11 +1,8 @@
 "use client";
 
-import "../globals.css";
+import "../../../globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import Sidebar from "@/components/layout/sidebar";
-import { useState } from "react";
-import ListChatPage from "./space/page";
-
+import ListSpacePage from "../page";
 export default function Layout({
   children,
 }: Readonly<{
@@ -15,8 +12,8 @@ export default function Layout({
     <>
       <main>
         <div className="w-full max-h-screen flex">
-          <Sidebar />
-          <div className="w-full">{children}</div>
+          <ListSpacePage />
+          <div className="w-[70%]">{children}</div>
         </div>
       </main>
       <Toaster />

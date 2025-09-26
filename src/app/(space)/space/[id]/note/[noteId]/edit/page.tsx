@@ -64,7 +64,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
       );
       if (!res.ok) throw new Error("Failed to update note");
 
-      router.push(`/${params.id}/message`);
+      router.push(`/space/${params.id}/note/${params.noteId}`);
     } catch (error) {
       console.error(error);
     }
@@ -76,7 +76,7 @@ export default function SpaceNotePage({ params }: SpaceNoteProps) {
     <div className="max-h-screen h-screen w-full flex flex-col">
       {/* header */}
       <div
-        onClick={() => router.push(`/${params.id}/message`)}
+        onClick={() => router.push(`/space/${params.id}/message`)}
         className="h-15 bg-primary flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />

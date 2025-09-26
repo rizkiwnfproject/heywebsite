@@ -21,16 +21,23 @@ export function createId(length: number) {
 }
 
 export const supabaseUploadFile = async (
-  file: File | string,
+  file: File,
   category: string
 ) => {
-  const filename = `${createId(6)}.jpg`;
+  const ext = file.name.split(".").pop() || "png";
+  console.log(ext);
+  
+  const filename = `${createId(6)}.png`;
+
+    console.log("file akan diupload:", file.name, file.type, file.size);
+
 
   const { data, error } = await supabaseClient.storage
     .from("Photos")
     .upload(`${category}/${filename}`, file, {
       cacheControl: "3600",
       upsert: false,
+      contentType: file.type,
     });
   return {
     data,
@@ -39,14 +46,12 @@ export const supabaseUploadFile = async (
   };
 };
 
-export const supabaseGetFile = async (filename: string, category: string) => {
+export const supabaseGetFile = (filename: string, category: string) => {
   const { data } = supabaseClient.storage
     .from("Photos")
     .getPublicUrl(`${category}/${filename}`);
 
-  return {
-    publicUrl: data.publicUrl,
-  };
+  return data.publicUrl
 };
 
 export const supabaseDeleteFile = async (
