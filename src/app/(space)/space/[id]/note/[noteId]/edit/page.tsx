@@ -67,7 +67,7 @@ export default function SpaceNotePage() {
         className="h-15 bg-slate-900 flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />
-        <p>Kembali</p>
+        <p>Back</p>
       </div>
 
       <div className="p-10 h-full">
@@ -75,7 +75,7 @@ export default function SpaceNotePage() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
             {/* Title */}
             <div className="grid grid-cols-6 items-center">
-              <div className="col-span-2 font-semibold">Judul Note</div>
+              <div className="col-span-2 font-semibold">Note title</div>
               <div className="col-span-4">
                 <FormField
                   control={form.control}
@@ -85,7 +85,7 @@ export default function SpaceNotePage() {
                       <FormControl>
                         <Input
                           className="rounded p-5"
-                          placeholder="Tulis Judul"
+                          placeholder="Please enter note title"
                           {...field}
                         />
                       </FormControl>
@@ -97,7 +97,7 @@ export default function SpaceNotePage() {
 
             {/* Content */}
             <div className="grid grid-cols-6 items-start">
-              <div className="col-span-2 font-semibold">Isi Note</div>
+              <div className="col-span-2 font-semibold">Field note</div>
               <div className="col-span-4">
                 <BlockEditor
                   initialContent={content}

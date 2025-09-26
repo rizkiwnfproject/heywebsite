@@ -12,14 +12,14 @@ export async function POST(req: Request) {
 
   if (!user || user.email !== email) {
     return NextResponse.json(
-      { error: "Username/Email tidak ditemukan" },
+      { error: "Username/Email not found" },
       { status: 401 }
     );
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return NextResponse.json({ error: "Password salah" }, { status: 401 });
+    return NextResponse.json({ error: "Password wrong" }, { status: 401 });
   }
 
   const token = signJwt({ id: user.id, username: user.username });

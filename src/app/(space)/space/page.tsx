@@ -96,7 +96,7 @@ const ListSpacePage = () => {
                 );
               })
             ) : (
-              <div className="">Tidak ada space</div>
+              <div className="">No space</div>
             )}
           </div>
         </div>

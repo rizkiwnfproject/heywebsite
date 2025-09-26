@@ -15,7 +15,7 @@ export default function InvitePage() {
       if (res.ok && data.redirect) {
         router.push(data.redirect);
       } else {
-        alert(data.error || "Invite tidak valid");
+        alert(data.error || "Invitation is not valid");
         router.push("/space");
       }
     };
@@ -23,5 +23,5 @@ export default function InvitePage() {
     joinSpace();
   }, [params.token, router]);
 
-  return <p className="p-5">Memproses undangan...</p>;
+  return <p className="p-5">Processing your invitation, please wait</p>;
 }

@@ -6,17 +6,17 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const payload = token ? verifyJwt(token) : null;
-  const isAuthPage =
-    pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
 
-  // 🚫 Belum login → boleh ke sign-in / sign-up saja
+  console.log("Middleware check:", { pathname, token, payload });
+
+  const isAuthPage = pathname === "/sign-in" || pathname === "/sign-up";
+
   if (!payload && !isAuthPage) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
-  // ✅ Sudah login → jangan boleh ke sign-in / sign-up
   if (payload && isAuthPage) {
-    return NextResponse.redirect(new URL("/", req.url)); // bisa diganti "/message"
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
@@ -24,8 +24,8 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // "/((?!_next/static|_next/image|favicon.ico).*)",
-    "/((?!sign-in|sign-up|api/sign-in|api/sign-up|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|assets).*)",
+    // "/((?!sign-in|sign-up|api/sign-in|api/sign-up|_next/static|_next/image|favicon.ico|assets).*)",
   ],
   runtime: "nodejs",
 };

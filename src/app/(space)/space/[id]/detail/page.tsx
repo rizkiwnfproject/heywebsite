@@ -25,7 +25,7 @@ interface SpaceProps {
 }
 
 const SpaceDetailPage = () => {
-    const params = useParams<{ id: string }>(); 
+  const params = useParams<{ id: string }>();
   const id = params.id;
   const router = useRouter();
 
@@ -39,8 +39,8 @@ const SpaceDetailPage = () => {
   console.log(space);
 
   if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="p-5 text-red-500">Error loading spaces</p>;
-  if (!space) return <p className="p-5">Tidak ada data</p>;
+  if (error) return <p className="">Please.. refresh this page</p>;
+  if (!space) return <p className="p-5">Data not found</p>;
 
   const handleInviteSpace = async () => {
     try {
@@ -48,16 +48,16 @@ const SpaceDetailPage = () => {
         method: "POST",
       });
 
-      if (!res.ok) throw new Error("Gagal generate invite");
+      if (!res.ok) throw new Error("Failed to generate invite");
 
       const data = await res.json();
 
       await navigator.clipboard.writeText(data.inviteUrl);
 
-      alert(`Link invite disalin: ${data.inviteUrl}`);
+      alert(`Invite link copied: ${data.inviteUrl}`);
     } catch (err) {
       console.error(err);
-      alert("Terjadi error saat generate link invite");
+      alert("An error occurred while generating the invite link");
     }
   };
 
@@ -90,7 +90,7 @@ const SpaceDetailPage = () => {
             className="flex items-center  text-white cursor-pointer"
           >
             <ChevronLeft />
-            <p>Kembali</p>
+            <p>Back</p>
           </div>
           <div className="space-x-2 flex items-center font-semibold">
             <Button onClick={handleInviteSpace} variant={"outline"}>
@@ -118,7 +118,7 @@ const SpaceDetailPage = () => {
               <div className="p-5 border border-border space-y-3 rounded-lg ">
                 <p className="text-2xl font-semibold">{space.name}</p>
                 <p className="text-slate-400">
-                  Dibuat oleh :{" "}
+                  Created by :{" "}
                   <span className="text-black font-medium capitalize">
                     {space.creator.name}
                   </span>
@@ -130,7 +130,7 @@ const SpaceDetailPage = () => {
                 </p>
               </div>
               <div className="p-5 border border-border space-y-3 rounded-lg flex items-center justify-between">
-                <p className="font-semibold">Permission</p>
+                <p className="font-semibold">Permission space for private</p>
                 <p
                   className={`${
                     space.permission ? "bg-primary" : "bg-destructive"
@@ -163,7 +163,7 @@ const SpaceDetailPage = () => {
             } gap-3`}
           >
             <div className="border border-border max-h-[325px] h-full p-5 space-y-3 overflow-y-auto">
-              <p className="font-semibold">Member Space</p>
+              <p className="font-semibold">Space Member</p>
               <div className="space-y-2">
                 {space.SpaceMember.filter(
                   (member) => member.status === "ACCEPTED"
@@ -184,7 +184,7 @@ const SpaceDetailPage = () => {
             </div>
             {space.role === "ADMIN" && (
               <div className="border border-border max-h-[325px] h-full p-5 space-y-3 overflow-y-auto">
-                <p className="font-semibold">Invite Member Space</p>
+                <p className="font-semibold">Invite Space Member</p>
                 <div className="space-y-2">
                   {space.SpaceMember.filter(
                     (member) => member.status === "PENDING"

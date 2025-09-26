@@ -35,7 +35,6 @@ export async function GET(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  // return note + role user
   return NextResponse.json({
     ...note,
     role: spaceMember.role,

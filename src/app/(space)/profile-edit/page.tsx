@@ -152,7 +152,7 @@ export default function ProfileEditPage() {
                             onChange={(e) => {
                               const files = e.target.files;
                               if (files && files[0]) {
-                                field.onChange(files); // 👈 kirim FileList ke react-hook-form
+                                field.onChange(files); 
                                 setPreview(URL.createObjectURL(files[0]));
                               }
                             }}
@@ -172,7 +172,7 @@ export default function ProfileEditPage() {
                     <FormControl>
                       <Input
                         disabled={isDisabled}
-                        placeholder="Enter your username"
+                        placeholder="Please enter your username"
                         {...field}
                       />
                     </FormControl>
@@ -190,7 +190,7 @@ export default function ProfileEditPage() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your name" {...field} />
+                      <Input placeholder="Please enter your name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -205,7 +205,7 @@ export default function ProfileEditPage() {
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder="Please enter your email"
                         {...field}
                       />
                     </FormControl>
@@ -218,11 +218,11 @@ export default function ProfileEditPage() {
                 name="number_phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Number Phone</FormLabel>
+                    <FormLabel>Phone Number</FormLabel>
                     <FormControl>
                       <Input
                         disabled
-                        placeholder="Enter your number phone"
+                        placeholder="Please enter your phone number"
                         {...field}
                       />
                     </FormControl>

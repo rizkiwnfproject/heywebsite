@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
     if (!body.email || !body.number_phone || !body.username || !body.name || !body.password) {
       return NextResponse.json(
-        { message: "Data tidak lengkap" },
+        { message: "Incomplete data" },
         { status: 400 }
       );
     }
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
     if (user) {
       return NextResponse.json(
-        { message: "Email/Username sudah digunakan" },
+        { message: "Email/Username is already in use" },
         { status: 400 }
       );
     }

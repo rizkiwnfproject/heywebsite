@@ -27,7 +27,7 @@ export async function PUT(req: Request) {
 
     if (user) {
       return NextResponse.json(
-        { message: "Email/Username sudah digunakan" },
+        { message: "Email/Username is already in use" },
         { status: 400 }
       );
     }
@@ -54,7 +54,6 @@ export async function PUT(req: Request) {
         email: parsed.data.email,
         lastUsernameChange: new Date(Date.now()),
         photo: parsed.data.photo ?? undefined,
-        // nomor HP tidak bisa diubah
       },
       select: {
         id: true,

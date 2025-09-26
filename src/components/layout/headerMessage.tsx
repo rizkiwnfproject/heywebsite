@@ -50,7 +50,6 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
       <div className="">
         <div className="h-15 bg-slate-900 flex items-center p-5 gap-2 cursor-pointer justify-between">
           <p className="font-semibold text-xl text-white">{name}</p>
-          {/* <EllipsisVertical /> */}
           <div className="flex gap-2">
             <Button onClick={() => router.push(`/space/${spaceId}/detail`)}>
               <Info />
@@ -69,7 +68,7 @@ const HeaderMessage: FC<HeaderMessageProps> = ({
               <p>{note.title} </p>
             </Button>
           )): (
-            <Button variant={"outline"}>Belum Ada Note</Button>
+            <Button variant={"outline"}>No notes yet</Button>
           )}
         </div>
       </div>

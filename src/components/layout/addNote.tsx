@@ -42,8 +42,8 @@ const AddNoteModal: FC<AddNoteModalProps> = ({ id }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(val),
       });
-      toast("Sukses", {
-        description: "Note berhasil dibuat",
+      toast("Success", {
+        description: "Note successfully created",
       });
     } catch (error) {
       toast("Error", {
@@ -67,7 +67,7 @@ const AddNoteModal: FC<AddNoteModalProps> = ({ id }) => {
 
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Buat Note</DialogTitle>
+            <DialogTitle>Create Note</DialogTitle>
             <DialogDescription>
               Anyone who has this link will be able to view this.
             </DialogDescription>
@@ -79,7 +79,7 @@ const AddNoteModal: FC<AddNoteModalProps> = ({ id }) => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Judul</FormLabel>
+                    <FormLabel>Title</FormLabel>
                     <FormControl>
                       <Input placeholder="Kelompok 1" {...field} />
                     </FormControl>
@@ -89,7 +89,7 @@ const AddNoteModal: FC<AddNoteModalProps> = ({ id }) => {
               />
 
               <Button variant="default" className="w-full">
-                Tambahkan Note
+                Add Note
               </Button>
             </form>
           </Form>

@@ -27,8 +27,6 @@ export async function PATCH(
     });
 
     return NextResponse.json(updated);
-
-    return NextResponse.json(updated);
   } catch (err) {
     return NextResponse.json({ error: "Member not found" }, { status: 404 });
   }

@@ -38,7 +38,7 @@ export default function SpaceNotePage() {
         className="h-15 bg-slate-900 flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />
-        <p>Kembali</p>
+        <p>Back</p>
       </div>
 
       <div className="h-full">
@@ -56,7 +56,7 @@ export default function SpaceNotePage() {
                   Edit
                 </Button>
                 <Button disabled variant={"destructive"} className="rounded">
-                  Hapus
+                  Delete
                 </Button>
               </div>
             )}

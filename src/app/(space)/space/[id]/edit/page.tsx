@@ -105,7 +105,7 @@ export default function SpaceEditPage() {
         className="h-15 bg-slate-900 flex items-center px-5 text-white cursor-pointer"
       >
         <ChevronLeft />
-        <p>Kembali</p>
+        <p>Back</p>
       </div>
 
       <div className="p-10 h-full">
@@ -142,7 +142,7 @@ export default function SpaceEditPage() {
                           onChange={(e) => {
                             const files = e.target.files;
                             if (files && files[0]) {
-                              field.onChange(files); // 👈 kirim FileList ke react-hook-form
+                              field.onChange(files);
                               setPreview(URL.createObjectURL(files[0]));
                             }
                           }}
@@ -154,7 +154,7 @@ export default function SpaceEditPage() {
               </div>
             </div>
             <div className="grid grid-cols-6 items-center">
-              <div className="col-span-2 font-semibold">Nama Space</div>
+              <div className="col-span-2 font-semibold">Space Name</div>
               <div className="col-span-4">
                 <FormField
                   control={form.control}
@@ -164,7 +164,7 @@ export default function SpaceEditPage() {
                       <FormControl>
                         <Input
                           className="rounded p-5"
-                          placeholder="Tulis Nama Space"
+                          placeholder="Please enter space name"
                           {...field}
                         />
                       </FormControl>
@@ -174,7 +174,7 @@ export default function SpaceEditPage() {
               </div>
             </div>
             <div className="grid grid-cols-6 items-start">
-              <div className="col-span-2 font-semibold">Deskripsi Space</div>
+              <div className="col-span-2 font-semibold">Space Description</div>
               <div className="col-span-4">
                 <FormField
                   control={form.control}
@@ -184,7 +184,7 @@ export default function SpaceEditPage() {
                       <FormControl>
                         <Textarea
                           className="min-h-[150px]"
-                          placeholder="Tulis deskripsi space"
+                          placeholder="Please enter space description"
                           {...field}
                         />
                       </FormControl>

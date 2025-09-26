@@ -9,7 +9,7 @@ const SpacePage = () => {
         <Image src={'/assets/images/space/click.png'} alt='' width={500} height={500} unoptimized/>
       </div>
       <div className="">
-        <p>Tolong klik space agar terlihat messagenya</p>
+        <p className='text-xl font-medium'>Please click the space to see the message.</p>
       </div>
     </div>
     </>

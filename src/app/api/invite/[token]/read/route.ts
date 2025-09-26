@@ -52,8 +52,8 @@ export async function GET(
   return NextResponse.json({
     message:
       status === "PENDING"
-        ? "Request bergabung terkirim, menunggu persetujuan admin."
-        : "Berhasil bergabung ke space.",
+        ? "Join request sent, awaiting admin approval."
+        : "Successfully joined the space.",
     redirect: status === "PENDING" ? "/" : `/space/${invite.spaceId}/message`,
   });
 }

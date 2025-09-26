@@ -40,8 +40,8 @@ const AddSpaceModal = ({ onSuccess }: { onSuccess?: () => void }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(val),
       });
-      toast("Sukses", {
-        description: "Space berhasil dibuat",
+      toast("Success", {
+        description: "Space successfully created",
       });
       form.reset();
       onSuccess?.();
@@ -65,7 +65,7 @@ const AddSpaceModal = ({ onSuccess }: { onSuccess?: () => void }) => {
 
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Buat Space</DialogTitle>
+            <DialogTitle>Create Space</DialogTitle>
             <DialogDescription>
               Anyone who has this link will be able to view this.
             </DialogDescription>
@@ -87,7 +87,7 @@ const AddSpaceModal = ({ onSuccess }: { onSuccess?: () => void }) => {
               />
 
               <Button variant="default" className="w-full">
-                Tambahkan Space
+                Add Space
               </Button>
             </form>
           </Form>

@@ -62,15 +62,15 @@ export default function SpaceMessagePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(val),
       });
-      toast("Sukses", {
-        description: "Pesan berhasil dikirim",
+      toast("Success", {
+        description: "Message sent successfully",
       });
       form.reset();
       mutate();
     } catch (error) {
       console.log(error);
       toast("Error", {
-        description: "Data yang diinputkan salah",
+        description: "Incorrect data entered",
       });
     }
   };
@@ -82,18 +82,16 @@ export default function SpaceMessagePage() {
   }, [messages]);
 
   if (isLoading) return <p className="p-5">Loading...</p>;
-  if (error) return <p className="p-5 text-red-500">Error load pesan</p>;
+  if (error) return <p className="p-5 text-red-500">Error loading message</p>;
 
   return (
     <>
       <div className="max-h-screen h-screen w-full flex flex-col justify-between">
-        {/* header */}
         <HeaderMessage
           name={space?.name ?? "Loading..."}
           nameNote="Lesson"
           spaceId={id}
         />
-        {/* chat */}
         <div className="flex-1 p-5 space-y-2 overflow-y-auto">
           {messages.map((msg) => (
             <div
@@ -171,7 +169,6 @@ export default function SpaceMessagePage() {
               </div>
             </form>
           </Form>
-          {/* <div className="h-2 bg-slate-900"></div> */}
         </div>
       </div>
     </>

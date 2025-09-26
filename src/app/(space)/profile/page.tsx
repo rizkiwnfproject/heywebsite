@@ -31,7 +31,7 @@ const ProfilePage = () => {
   if (error) {
     return (
       <div className="h-screen flex justify-center items-center">
-        <p className="text-red-500">Failed to load profile</p>
+        <p className="">Please.. refresh this page</p>
       </div>
     );
   }
