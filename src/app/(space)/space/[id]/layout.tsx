@@ -19,7 +19,7 @@ export default function Layout({
       <main>
         <div className="w-full max-h-screen flex">
           <ListSpacePage />
-          <div className="">{children}</div>
+          <div className="w-[70%]">{children}</div>
         </div>
       </main>
       <Toaster />
