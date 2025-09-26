@@ -3,12 +3,11 @@ import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/token";
 import prisma from "../../../../../../lib/prisma";
 
-
 export async function GET(
   req: NextRequest,
-  { params }: { params: { token: string } }
+  context: { params: { token: string } }
 ) {
-  const { token } = params;
+  const { token } = context.params;
 
   const cookieStore = cookies();
   const tokenCookie = (await cookieStore).get("token")?.value;
