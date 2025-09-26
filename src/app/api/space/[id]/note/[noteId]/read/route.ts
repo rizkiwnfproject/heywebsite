@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../../../../lib/prisma";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/token";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string; noteId: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string; noteId: string }> }
 ) {
-  const { noteId } = await params;
+  const { noteId } = await context.params;
 
   const cookieStore = cookies();
   const token = (await cookieStore).get("token")?.value;

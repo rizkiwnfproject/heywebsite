@@ -1,10 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../../../lib/prisma";
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
+
   const { status } = await req.json();
 
   if (!["ACCEPTED", "REJECTED"].includes(status)) {
@@ -14,13 +16,13 @@ export async function PATCH(
   try {
     if (status === "REJECTED") {
       await prisma.spaceMember.delete({
-        where: { id: params.id },
+        where: { id: id },
       });
       return NextResponse.json({ message: "Member rejected & removed" });
     }
 
     const updated = await prisma.spaceMember.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { status: "ACCEPTED" },
     });
 

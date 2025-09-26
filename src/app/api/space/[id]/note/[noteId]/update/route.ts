@@ -1,10 +1,12 @@
+import { NextRequest } from "next/server";
 import prisma from "../../../../../../../../lib/prisma";
 
 export async function PUT(
-  req: Request,
-  { params }: { params: { id: string; noteId: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string; noteId: string }> }
 ) {
-  const { noteId } = await params;
+  const { id, noteId } = await context.params;
+
   const body = await req.json();
 
   console.log("noteId:", noteId);

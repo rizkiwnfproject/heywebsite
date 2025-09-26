@@ -6,6 +6,7 @@ import { MantineProvider } from "@mantine/core";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} ${inter.className} antialiased`}>
         <MantineProvider defaultColorScheme="light">{children}</MantineProvider>
       </body>
     </html>

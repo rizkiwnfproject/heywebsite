@@ -1,13 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../../../lib/prisma";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/token";
 import { updateSpaceApiSchema, updateSpaceSchema } from "@/lib/schema";
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
+
   try {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value;
@@ -31,7 +33,7 @@ export async function PATCH(
     }
 
     const updated = await prisma.space.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         name: parsed.data.name,
         description: parsed.data.description,

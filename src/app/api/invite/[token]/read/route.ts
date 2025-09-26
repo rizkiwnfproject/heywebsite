@@ -1,12 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/token";
 import prisma from "../../../../../../lib/prisma";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { token: string } }
+  req: NextRequest,
+  context: { params: Promise<{ token: string }> }
 ) {
+  const { token } = await context.params;
+
   const cookieStore = cookies();
   const tokenCookie = (await cookieStore).get("token")?.value;
   if (!tokenCookie)
@@ -17,7 +19,7 @@ export async function GET(
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
 
   const invite = await prisma.invite.findUnique({
-    where: { token: params.token },
+    where: { token: token },
     include: { Space: true },
   });
 

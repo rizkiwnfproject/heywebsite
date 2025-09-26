@@ -1,13 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/token";
 import prisma from "../../../../../../../../lib/prisma";
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string; noteId: string } }
+req: NextRequest,
+  context: { params: Promise<{ id: string, noteId:string }> }
 ) {
-  const { id, noteId } = params;
+    const { id, noteId } = await context.params;
+
 
   // cek token
   const cookieStore = cookies();
