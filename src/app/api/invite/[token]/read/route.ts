@@ -5,9 +5,9 @@ import prisma from "../../../../../../lib/prisma";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { token: string } }
+  context: { params: Promise<{ token: string }> }
 ) {
-  const { token } = context.params;
+  const { token } = await context.params;
 
   const cookieStore = cookies();
   const tokenCookie = (await cookieStore).get("token")?.value;

@@ -3,9 +3,10 @@ import prisma from "../../../../../../../lib/prisma";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-const { id } = params;
+  const { id } = await context.params;
+
   const space = await prisma.invite.findUnique({
     where: { id: id },
     include: {

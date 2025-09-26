@@ -5,9 +5,10 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-const { id } = params;
+  const { id } = await context.params;
+
   const cookieStore = cookies();
   const token = (await cookieStore).get("token")?.value;
   const payload = verifyJwt(token!);

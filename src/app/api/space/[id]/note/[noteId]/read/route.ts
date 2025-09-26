@@ -5,9 +5,9 @@ import { verifyJwt } from "@/lib/token";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string; noteId: string } }
+  context: { params: Promise<{ id: string; noteId: string }> }
 ) {
-  const { noteId } = params;
+  const { noteId } = await context.params;
 
   const cookieStore = cookies();
   const token = (await cookieStore).get("token")?.value;

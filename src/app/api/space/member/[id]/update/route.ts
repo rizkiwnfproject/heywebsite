@@ -3,9 +3,10 @@ import prisma from "../../../../../../../lib/prisma";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params;
+
   const { status } = await req.json();
 
   if (!["ACCEPTED", "REJECTED"].includes(status)) {
