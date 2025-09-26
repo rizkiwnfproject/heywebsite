@@ -3,13 +3,10 @@ import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/token";
 import prisma from "../../../../../../lib/prisma";
 
-interface RouteContext {
-  params: { token: string };
-}
 
 export async function GET(
   req: NextRequest,
-  { params }: RouteContext
+  { params }: { params: { token: string } }
 ) {
   const { token } = params;
 
