@@ -3,11 +3,15 @@ import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/token";
 import prisma from "../../../../../../lib/prisma";
 
+interface RouteContext {
+  params: { token: string };
+}
+
 export async function GET(
   req: NextRequest,
-  context: { params: Record<string, string> }
+  { params }: RouteContext
 ) {
-  const { token } = context.params;
+  const { token } = params;
 
   const cookieStore = cookies();
   const tokenCookie = (await cookieStore).get("token")?.value;
