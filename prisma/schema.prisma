@@ -107,7 +107,6 @@ model Message {
   User      User     @relation(fields: [userId], references: [id])
   message   String?
   photo     String?
-  reply_to  String?  @db.Uuid
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
